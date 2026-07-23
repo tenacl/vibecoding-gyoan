@@ -747,7 +747,7 @@
             <li>아래 명령어를 복사해서 PowerShell 창에 붙여넣고(마우스 우클릭 = 붙여넣기) Enter — 설치가 자동으로 진행된다</li>
             <li>설치가 끝나면 <b>PowerShell 창을 닫았다가 새로 연다</b> (새 창이어야 설치를 인식한다)</li>
             <li>새 창에서 <code>claude --version</code>을 쳐본다 — 버전 번호가 나오면 설치 성공</li>
-            <li><code>claude</code>를 치면 첫 실행 — 브라우저가 열리면서 로그인 화면이 뜬다. <b>Claude 계정으로 로그인</b>하고, 화면에 코드가 나오면 복사해서 터미널에 붙여넣는다. "Login successful"이 뜨면 끝</li>
+            <li><code>claude</code>를 치면 첫 실행 — 브라우저가 열리면서 로그인 화면이 뜬다. <b>Claude 계정으로 로그인</b>하고, 화면에 코드가 나오면 복사해서 터미널에 붙여넣는다. "Login successful"이 뜨면 끝. 참고로 클로드 코드는 <b>유료 구독(Pro 이상)</b> 계정이어야 쓸 수 있다 — 로그인이 됐는데도 안 된다면 대부분 이 이유다</li>
           </ol>
           <div class="prompt-box"><span class="plead">POWERSHELL — 설치 명령어 (한 줄 그대로 복사)</span>irm https://claude.ai/install.ps1 | iex</div>
         </div>
@@ -811,7 +811,7 @@
           <div class="plabel">실습 — 첫 프롬프트</div>
           <ol>
             <li>바탕화면에 <code>vibe-day1</code> 폴더를 만든다 — 이 폴더가 곧 "프로젝트"다</li>
-            <li>폴더를 열고 주소창에 <code>powershell</code>이라고 쳐서 그 위치에서 터미널을 연 뒤, <code>claude</code>를 입력해 Claude Code를 시작한다</li>
+            <li>만든 폴더를 연 다음, <b>파일 탐색기 위쪽의 주소창</b>을 클릭하고 <code>powershell</code>이라고 친 뒤 Enter — 그러면 그 폴더 위치에서 터미널이 열린다. 여기서 <code>claude</code>를 입력하면 시작된다</li>
             <li>아래 프롬프트를 보낸다</li>
             <li>폴더에 생긴 <code>index.html</code> 파일을 더블클릭해 브라우저로 연다</li>
             <li>화면이 뜨면 성공! 오늘의 첫 작품이다</li>
@@ -819,6 +819,12 @@
           <div class="prompt-box"><span class="plead">EXAMPLE PROMPT</span>내 이름과 오늘 날짜, "나의 첫 바이브코딩"이라는 제목이 있는
 한 페이지짜리 HTML을 만들어줘. 배경은 밝은 색, 글자는 화면 가운데 크게.</div>
         </div>
+        <h3 class="sec">이 장을 마치면</h3>
+        <ul class="checklist">
+          <li>터미널에 <code>claude --version</code>을 치면 버전 번호가 나온다</li>
+          <li>내가 만든 <code>index.html</code>이 브라우저에서 열린다</li>
+          <li>"프롬프트가 뭐예요?"라는 질문에 한 문장으로 답할 수 있다</li>
+        </ul>
         <h3 class="sec">더 깊이 — 공식 자료</h3>
         <ul class="reflinks">
           <li><a href="https://code.claude.com/docs/en/setup" target="_blank" rel="noopener">Claude Code 설치 공식 문서</a><span class="dom">code.claude.com</span></li>
@@ -901,11 +907,16 @@
         <div class="practice">
           <div class="plabel">실습 — 내 페이지 해부하기</div>
           <ol>
-            <li>브라우저에서 <b>F12</b> 키(노트북은 Fn+F12)를 눌러 개발자도구를 연다 — 지금 보는 페이지의 HTML/CSS가 그대로 보인다</li>
+            <li>브라우저에서 <b>F12</b> 키(노트북은 Fn+F12)를 눌러 개발자도구를 연다. 위쪽의 <b>Elements(요소)</b> 탭에서 내가 쓴 문장을 찾아보자 — 그게 바로 HTML이다. 오른쪽 <b>Styles</b> 영역에 보이는 것이 CSS다</li>
             <li>Claude에게 물어본다: "이 페이지에서 프론트엔드는 어디까지야? 백엔드가 필요해지는 기능 3개를 제안해줘"</li>
             <li>이어서 시켜본다: "내 페이지 코드에서 변수·조건문·함수를 하나씩 찾아서, 무슨 일을 하는지 비개발자에게 설명하듯 한글로 번역해줘"</li>
           </ol>
         </div>
+        <h3 class="sec">이 장을 마치면</h3>
+        <ul class="checklist">
+          <li>프론트엔드·백엔드·데이터베이스를 식당에 비유해서 설명할 수 있다</li>
+          <li>F12를 눌러 내 페이지의 HTML을 직접 눈으로 찾아봤다</li>
+        </ul>
         <h3 class="sec">더 깊이 — 공식 자료</h3>
         <ul class="reflinks">
           <li><a href="https://developer.mozilla.org/ko/docs/Learn_web_development/Getting_started/Web_standards/How_the_web_works" target="_blank" rel="noopener">웹은 어떻게 동작하는가 (MDN, 한국어)</a><span class="dom">developer.mozilla.org</span></li>
@@ -1099,14 +1110,20 @@
           <div class="plabel">배포 순서 — GitHub Pages (클릭만으로 끝)</div>
           <ol>
             <li>배포 전 확인 2가지 — 저장소는 <b>Public</b>으로 만들 것(무료 요금제는 공개 저장소만 Pages 가능), 첫 화면 파일명은 정확히 <b><code>index.html</code></b>일 것(<code>Index.html</code>, <code>home.html</code>은 안 됨)</li>
-            <li>github.com 로그인 → 우상단 <b>+</b> → <b>New repository</b> → 이름 입력(예: profile) → <b>Create repository</b></li>
-            <li><b>uploading an existing file</b> 링크를 눌러 내 파일들을 드래그해서 올리고 <b>Commit changes</b></li>
+            <li>github.com 로그인 → 우상단 <b>+</b> → <b>New repository</b> → 이름 입력(영문 소문자로 짓자, 예: profile) → <b>Create repository</b></li>
+            <li><b>uploading an existing file</b> 링크를 눌러 파일을 드래그해서 올리고 <b>Commit changes</b> — 오늘 만든 <code>index.html</code> 하나면 충분하다</li>
             <li>저장소 상단 <b>Settings → Pages</b> 메뉴 → Source는 <b>Deploy from a branch</b>, Branch를 <b>main</b> + <b>/ (root)</b>로 선택하고 <b>Save</b></li>
             <li>잠시 후 새로고침하면 "Your site is live at…" 상자가 뜬다 — 주소 규칙은 <code>https://아이디.github.io/저장소이름/</code></li>
             <li>내 폰으로도 열어본다 — 와이파이가 아니어도 열린다. 진짜 인터넷에 있다는 뜻이다</li>
           </ol>
         </div>
-        <div class="tipcard">완료 조건 — ① 내 URL이 열린다 ② 폰에서도 열린다 ③ 옆 사람과 URL을 교환해 서로 방문해본다.<br>이후 수정은 쉽다 — <b>파일을 다시 올리기만 하면 1~2분 뒤 자동 반영</b>됩니다. 첫 배포만 최대 10분 걸릴 수 있어요.</div>
+        <h3 class="sec">이 장을 마치면</h3>
+        <ul class="checklist">
+          <li>내 프로필 페이지가 <code>https://아이디.github.io/…</code> 주소로 열린다</li>
+          <li>폰으로도 열어봤다 — 진짜 인터넷 위에 있다는 뜻이다</li>
+          <li>옆 사람과 URL을 주고받아 서로의 페이지를 구경했다</li>
+        </ul>
+        <div class="tipcard">이후 수정은 쉽습니다 — <b>파일을 다시 올리기만 하면 1~2분 뒤 자동 반영</b>됩니다. 첫 배포만 최대 10분 걸릴 수 있어요.</div>
         <h3 class="sec">잘 안 될 때</h3>
         <div class="table-wrap">
           <table>
@@ -1176,16 +1193,27 @@
         <div class="practice">
           <div class="plabel">실습 흐름</div>
           <ol>
-            <li>게임 하나를 골라 "일단 움직이는" 기본 버전을 만든다</li>
+            <li>게임 하나를 고른다 — 처음이라면 <b>뱀게임</b>이 좋다. 규칙이 가장 단순해서, 만드는 것보다 고치고 살 붙이는 재미에 집중할 수 있다</li>
+            <li>아래 시작 프롬프트처럼 <b>"일단 기본 동작까지만"</b> 끊어서 시킨다 — 오전에 배운 그 습관이다</li>
             <li>점수 표시 → 속도 증가 → 게임오버 화면 순으로 기능을 <b>하나씩</b> 추가한다</li>
             <li>버그를 만나면 아래 템플릿으로 신고한다 — 남의 버그가 최고의 교재이니, 옆 사람과 서로 버그를 구경하자</li>
           </ol>
+          <div class="prompt-box"><span class="plead">EXAMPLE PROMPT (시작)</span>뱀게임을 HTML 파일 하나로 만들어줘.
+방향키로 뱀을 조작하고, 먹이를 먹으면 몸이 길어지면서 점수가 올라가.
+벽이나 자기 몸에 부딪히면 게임오버야.
+단계적으로 만들 거니까, 일단 뱀이 움직이는 기본 동작까지만.</div>
           <div class="prompt-box"><span class="plead">EXAMPLE PROMPT (버그 신고 템플릿)</span>버그가 있어.
 기대한 것: 블록이 바닥에 닿으면 쌓여야 해.
 실제 동작: 바닥을 뚫고 사라져.
 에러 메시지: (F12 콘솔에 뜬 빨간 글씨를 그대로 붙여넣기)
 이것만 고쳐줘. 다른 부분은 건드리지 마.</div>
         </div>
+        <h3 class="sec">이 장을 마치면</h3>
+        <ul class="checklist">
+          <li>내 게임이 실제로 플레이된다 — 완성도는 아직 중요하지 않다</li>
+          <li>버그를 최소 한 번 만나서, 템플릿으로 신고해 고쳐봤다</li>
+          <li>"기대한 것 vs 실제 동작"으로 말하는 요령이 입에 붙기 시작했다</li>
+        </ul>
         <h3 class="sec">더 깊이 — 공식 자료</h3>
         <ul class="reflinks">
           <li><a href="https://developer.mozilla.org/en-US/docs/Learn_web_development/Howto/Tools_and_setup/What_are_browser_developer_tools" target="_blank" rel="noopener">브라우저 개발자도구란? (MDN)</a><span class="dom">developer.mozilla.org</span></li>
@@ -1287,6 +1315,11 @@
 - 코드를 바꾸면 무엇을 왜 바꿨는지 한 줄로 알려주기
 - API 키는 절대 코드에 직접 적지 않기</div>
         </div>
+        <h3 class="sec">이 장을 마치면</h3>
+        <ul class="checklist">
+          <li>내 프로젝트 폴더에 <code>CLAUDE.md</code>가 들어 있다</li>
+          <li>새 대화를 열어도 내가 적은 규칙이 자동으로 지켜지는 걸 확인했다</li>
+        </ul>
         <h3 class="sec">더 깊이 — 공식 자료</h3>
         <ul class="reflinks">
           <li><a href="https://code.claude.com/docs/en/memory" target="_blank" rel="noopener">CLAUDE.md(메모리) 공식 문서</a><span class="dom">code.claude.com</span></li>
@@ -1390,6 +1423,22 @@
 구독자 수와 최근 영상 목록을 보여주는 기능이야.
 API 키는 발급받아 뒀어. 키를 넣을 위치만 알려주면 내가 직접 넣을게.</div>
         </div>
+        <h3 class="sec">잘 안 될 때</h3>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>증상</th><th>해결</th></tr></thead>
+            <tbody>
+              <tr><td>익스텐션 카드에 빨간 <b>"오류"</b> 버튼이 보임</td><td>그 버튼을 누르면 에러 메시지가 나온다 — 복사해서 Claude에게 그대로 전달하자</td></tr>
+              <tr><td>코드를 고쳤는데 바뀐 게 없음</td><td><code>chrome://extensions</code>에서 내 익스텐션 카드의 <b>새로고침(↻)</b> 버튼을 눌러야 반영된다 — 다들 한 번씩 잊는 단계다</td></tr>
+              <tr><td>팝업이 하얗게만 뜸</td><td>팝업 위에서 우클릭 → <b>검사</b> → Console 탭의 빨간 글씨를 캡처해 Claude에게</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <h3 class="sec">이 장을 마치면</h3>
+        <ul class="checklist">
+          <li>크롬 우상단 퍼즐 아이콘 안에 내가 만든 익스텐션이 있다</li>
+          <li>클릭하면 구글 API에서 받아온 진짜 데이터가 팝업에 뜬다</li>
+        </ul>
       </article>
 
       <!-- ═══ d2-5 ═══ -->
@@ -1443,6 +1492,12 @@ API 키는 발급받아 뒀어. 키를 넣을 위치만 알려주면 내가 직�
 인증키는 발급받아 뒀어. 넣을 위치를 알려줘.</div>
         </div>
         <div class="tipcard">막히면 어제의 디버깅 3원칙 — ① 에러 전문 붙여넣기 ② "기대 vs 실제"로 말하기 ③ 한 번에 하나만. API 프로젝트에서 특히 강력합니다.</div>
+        <h3 class="sec">이 장을 마치면</h3>
+        <ul class="checklist">
+          <li>F12 콘솔에서 API 응답(JSON)을 내 눈으로 봤다</li>
+          <li>받아온 데이터가 차트로 그려진다</li>
+          <li>질문을 입력하면 데이터를 근거로 답이 돌아온다</li>
+        </ul>
       </article>
 
       <!-- ═══ d2-6 ═══ -->
@@ -1480,6 +1535,7 @@ API 키는 발급받아 뒀어. 키를 넣을 위치만 알려주면 내가 직�
         <ul>
           <li><b>테스트 결제</b>란: 결제 회사(토스페이먼츠)가 연습용으로 제공하는 가짜 결제. 키가 <code>test_</code>로 시작하는 한 <b>실제 돈은 1원도 빠져나가지 않는다</b></li>
           <li>키는 두 종류다 — <b>클라이언트 키</b>(<code>test_ck_</code>, 결제창을 띄우는 용도, 화면에 보여도 괜찮음) / <b>시크릿 키</b>(<code>test_sk_</code>, 결제를 확정하는 용도, <b>절대 공개 금지</b>). 어제 배운 "키는 비밀번호다"가 여기서 실전이 된다</li>
+          <li>내 키는 어디서 보나 — developers.tosspayments.com에 로그인하면 <b>내 개발정보</b> 메뉴에 테스트 키 두 개가 나란히 있다. 오늘은 준비된 공용 키로 진행하지만, 집에서 혼자 해볼 때를 위해 위치를 기억해두자</li>
           <li>오늘의 흐름: 준비된 쇼핑몰 스타터 → 상품 목록 → 장바구니 → 결제 버튼 → 토스 결제창 → <b>결제 성공 화면</b></li>
           <li>주문 내역은 <b>저장</b>되어야 하고(DB), "진짜 결제됐는지" 확인은 사용자 화면이 아니라 <b>서버</b>가 해야 안전하다(백엔드) — 화면의 금액 표시나 버튼 숨김은 보안이 아니다</li>
           <li>따라오다 막히면 바로 손들기 — 결제 연동은 원래 한 글자만 틀려도 멈춘다. 부끄러운 게 아니다</li>
@@ -1505,6 +1561,11 @@ API 키는 발급받아 뒀어. 키를 넣을 위치만 알려주면 내가 직�
           </table>
         </div>
         <div class="tipcard">쇼핑몰을 끝까지 제대로 만들어보고 싶다면 — 내일 파이널 프로젝트 주제로 선택하면 됩니다.</div>
+        <h3 class="sec">이 장을 마치면</h3>
+        <ul class="checklist">
+          <li>테스트 카드로 <b>"결제 성공"</b> 화면을 직접 봤다</li>
+          <li>결제 확인을 왜 화면이 아니라 서버가 해야 하는지 설명할 수 있다</li>
+        </ul>
         <h3 class="sec">더 깊이 — 공식 자료</h3>
         <ul class="reflinks">
           <li><a href="https://developers.tosspayments.com" target="_blank" rel="noopener">토스페이먼츠 개발자센터 (가입·테스트 키 발급)</a><span class="dom">developers.tosspayments.com</span></li>
@@ -1624,6 +1685,11 @@ API 키는 발급받아 뒀어. 키를 넣을 위치만 알려주면 내가 직�
             <li>계획 모드로 "오늘 만들 것"의 계획을 한 번 받아보고, 마음에 안 드는 부분을 고쳐본다</li>
           </ol>
         </div>
+        <h3 class="sec">이 장을 마치면</h3>
+        <ul class="checklist">
+          <li>파이널 프로젝트용 폴더와 CLAUDE.md가 준비되어 있다</li>
+          <li>계획 모드로 계획을 한 번 받아서, 마음에 안 드는 부분을 고쳐봤다</li>
+        </ul>
         <h3 class="sec">더 깊이 — 공식 자료</h3>
         <ul class="reflinks">
           <li><a href="https://code.claude.com/docs/en/hooks-guide" target="_blank" rel="noopener">훅(Hooks) 공식 가이드</a><span class="dom">code.claude.com</span></li>
@@ -1660,6 +1726,7 @@ API 키는 발급받아 뒀어. 키를 넣을 위치만 알려주면 내가 직�
         <ul>
           <li><b>PWA</b>(Progressive Web App의 약자, "점진적 웹 앱") = 홈 화면에 설치되고 전체화면으로 열리는 웹앱. 아이콘으로 실행하면 겉보기엔 일반 앱과 거의 같다</li>
           <li>필요한 것은 딱 두 가지 — <b>manifest</b>(앱 이름·아이콘 정보가 담긴 파일) + <b>서비스워커</b>(설치를 가능하게 해주는 스크립트). 둘 다 Claude가 만들어준다</li>
+          <li>한 가지 조건이 있는데, PWA는 <b>https 주소에서만</b> 설치된다. 다행히 GitHub Pages 주소는 자동으로 https라서 — 어제 배포한 그대로면 조건이 이미 갖춰져 있다</li>
         </ul>
         <h3 class="sec">앱스토어 앱과 뭐가 다른가</h3>
         <div class="table-wrap">
@@ -1682,13 +1749,18 @@ API 키는 발급받아 뒀어. 키를 넣을 위치만 알려주면 내가 직�
           <ol>
             <li>Day 1 프로필 프로젝트 폴더를 열고, 아래 프롬프트를 보낸다</li>
             <li>바뀐 파일들을 깃허브에 다시 올린다 (Day 1 배포와 같은 방법)</li>
-            <li>폰 브라우저로 내 주소를 열고 — 안드로이드(크롬): 메뉴(⋮) → <b>홈 화면에 추가</b> / 아이폰(사파리): 공유 버튼 → <b>홈 화면에 추가</b></li>
+            <li>폰 브라우저로 내 주소를 열고 — 안드로이드(크롬): 메뉴(⋮) → <b>홈 화면에 추가</b> / 아이폰: 꼭 <b>사파리</b>로 열어서 공유 버튼 → <b>홈 화면에 추가</b> (아이폰용 크롬에는 이 메뉴가 없으니 헤매지 말자)</li>
             <li>홈 화면의 내 앱 아이콘을 눌러 전체화면으로 열리면 성공</li>
           </ol>
           <div class="prompt-box"><span class="plead">EXAMPLE PROMPT</span>이 프로필 페이지를 PWA로 만들어줘.
 홈 화면에 설치할 수 있게 manifest와 서비스워커를 추가하고,
 앱 이름은 "OO의 프로필", 아이콘도 간단하게 만들어줘.</div>
         </div>
+        <h3 class="sec">이 장을 마치면</h3>
+        <ul class="checklist">
+          <li>내 폰 홈 화면에 내가 만든 앱 아이콘이 있다</li>
+          <li>아이콘을 누르면 주소창 없이 전체화면으로 열린다</li>
+        </ul>
         <h3 class="sec">더 깊이 — 공식 자료</h3>
         <ul class="reflinks">
           <li><a href="https://developer.mozilla.org/ko/docs/Web/Progressive_web_apps" target="_blank" rel="noopener">PWA란 무엇인가 (MDN, 한국어)</a><span class="dom">developer.mozilla.org</span></li>
@@ -1745,11 +1817,16 @@ API 키는 발급받아 뒀어. 키를 넣을 위치만 알려주면 내가 직�
           <div class="plabel">실습 — 내 사이트에 설치</div>
           <ol>
             <li>clarity.microsoft.com 접속 → 마이크로소프트 또는 구글 계정으로 가입</li>
-            <li>새 프로젝트 만들기 → 내 배포 주소 입력 → <b>추적 코드</b>를 복사한다</li>
+            <li>새 프로젝트 만들기 → 프로젝트 이름과 내 배포 주소를 입력하고 만들기 → <b>설정 → 설치</b>로 들어가면 <b>"직접 설치"</b> 탭에 추적 코드가 보인다 — 통째로 복사한다</li>
             <li>Claude에게 "이 스크립트를 내 페이지의 head에 넣어줘"라고 하고 복사한 코드를 붙여넣는다</li>
             <li>깃허브에 다시 올려 재배포하면 설치 끝 — 데이터는 오늘 저녁~내일 대시보드에서 확인</li>
           </ol>
         </div>
+        <h3 class="sec">이 장을 마치면</h3>
+        <ul class="checklist">
+          <li>추적 코드가 들어간 내 사이트가 다시 배포되어 있다</li>
+          <li>내일 대시보드에서 무엇을 볼지(히트맵·세션 녹화) 알고 있다</li>
+        </ul>
         <h3 class="sec">더 깊이 — 공식 자료</h3>
         <ul class="reflinks">
           <li><a href="https://clarity.microsoft.com" target="_blank" rel="noopener">MS Clarity (가입·대시보드)</a><span class="dom">clarity.microsoft.com</span></li>
@@ -1819,6 +1896,11 @@ API 키는 발급받아 뒀어. 키를 넣을 위치만 알려주면 내가 직�
             </tbody>
           </table>
         </div>
+        <h3 class="sec">이 장을 마치면</h3>
+        <ul class="checklist">
+          <li>내가 기획한 서비스의 핵심 기능이 실제로 동작한다</li>
+          <li>누구에게나 보낼 수 있는 링크가 생겼다</li>
+        </ul>
       </article>
 
       <!-- ═══ d3-7 ═══ -->
@@ -1882,7 +1964,8 @@ API 키는 발급받아 뒀어. 키를 넣을 위치만 알려주면 내가 직�
           <li><b>GitHub 계정 가입</b> (github.com) — Day 1 오후, 내 웹페이지를 인터넷에 공개할 때 사용</li>
           <li><b>Google 계정 준비</b> + Google Cloud 콘솔(console.cloud.google.com) 로그인 확인 — Day 2 구글 API 키 발급용</li>
           <li><b>공공데이터포털 가입</b> (data.go.kr) + 미세먼지·날씨 등 관심 API <b>활용신청 미리 제출</b> — 승인까지 시간이 걸릴 수 있음</li>
-          <li><b>Claude 계정 준비 + VS Code 설치</b> (code.visualstudio.com)</li>
+          <li><b>Claude 유료 구독(Pro 이상) 준비</b> — 아쉽게도 무료 계정으로는 클로드 코드를 쓸 수 없다. 요금제는 claude.com/pricing에서 확인</li>
+          <li><b>VS Code 설치</b> (code.visualstudio.com)</li>
           <li>토스페이먼츠 테스트 키는 수업에서 제공되므로 따로 준비할 것 없음</li>
         </ul>
         <div class="tipcard">준비하다 막히는 항목이 있어도 괜찮습니다 — 수업 첫날 아침에 함께 해결할 시간이 있습니다. 단, <b>공공데이터포털 활용신청만은 꼭 미리</b> 넣어두세요.</div>
