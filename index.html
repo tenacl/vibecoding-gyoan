@@ -870,6 +870,7 @@
           </table>
         </div>
         <ul>
+          <li>이름의 뜻 — <b>HTML</b>(HyperText Markup Language, 문서의 구조를 적는 언어) · <b>CSS</b>(Cascading Style Sheets, 색·모양을 정하는 규칙) · <b>JS</b>(JavaScript, 움직임을 만드는 프로그래밍 언어) · <b>DB</b>(Database, 데이터베이스)</li>
           <li>방금 만든 페이지가 바로 <b>프론트엔드</b>다 — 오늘 만드는 것들은 전부 프론트엔드만으로 완성된다</li>
           <li>백엔드와 DB가 "필요해지는 순간"은 Day 2에 직접 만나게 된다</li>
         </ul>
@@ -916,7 +917,7 @@
       <article class="page" id="p-d1-4">
         <div class="crumb" data-day="1"><span class="cday">DAY 1</span><span class="ctime">11:10–12:00</span><span class="chip theory">이론</span><span class="chip prac">실습</span></div>
         <h2>프롬프트 엔지니어링 + 토큰 절약법</h2>
-        <p class="goal">같은 AI라도 시키는 사람에 따라 결과가 완전히 달라집니다. 잘 시키는 법을 몸에 붙입니다.</p>
+        <p class="goal">같은 AI라도 시키는 사람에 따라 결과가 완전히 달라집니다. 잘 시키는 법을 체화합니다.</p>
 
         <div class="diagram">
           <svg viewBox="0 0 680 165" role="img" aria-label="좋은 프롬프트의 4요소 도식">
@@ -1238,7 +1239,7 @@
       <article class="page" id="p-d2-1">
         <div class="crumb" data-day="2"><span class="cday">DAY 2</span><span class="ctime">09:00–09:30</span><span class="chip theory">복습</span></div>
         <h2>Day 1 복습 퀴즈</h2>
-        <p class="goal">어제 배운 것이 몸에 남았는지 가볍게 확인하고, 막힌 것을 해소한 뒤 출발합니다.</p>
+        <p class="goal">어제 배운 내용을 간단히 복습하고, 막힌 부분을 해소한 뒤 시작합니다.</p>
         <h3 class="sec">스스로 점검 — 답해보고 넘어가자</h3>
         <ul>
           <li>프론트엔드 / 백엔드 / 데이터베이스는 각각 무슨 일을 하나? (식당 비유로 답해도 좋다)</li>
@@ -1317,7 +1318,8 @@
 
         <h3 class="sec">핵심 내용</h3>
         <ul>
-          <li>흐름은 항상 같다: <b>요청</b>("이 주소로 서울 미세먼지 주세요") → <b>응답</b>("여기 있습니다"). 응답은 주로 <b>JSON</b>이라는 형식 — 중괄호 <code>{ }</code>로 정리된 데이터 꾸러미인데, 읽고 해석하는 건 AI가 해주니 겁먹지 않아도 된다</li>
+          <li><b>API</b> = Application Programming Interface의 약자. "응용 프로그램끼리 대화하는 접속 창구"라는 뜻으로, 다른 회사의 데이터·기능을 정해진 형식으로 가져다 쓰는 통로다</li>
+          <li>흐름은 항상 같다: <b>요청</b>("이 주소로 서울 미세먼지 주세요") → <b>응답</b>("여기 있습니다"). 응답은 주로 <b>JSON</b>(JavaScript Object Notation의 약자)이라는 형식 — 중괄호 <code>{ }</code>로 정리된 데이터 꾸러미인데, 읽고 해석하는 건 AI가 해주니 겁먹지 않아도 된다</li>
           <li><b>API 키</b> = "나는 요청할 자격이 있어요"를 증명하는 열쇠. 발급받은 사람 명의로 사용량이 기록된다</li>
           <li>무료 API는 어디서 찾나 — <b>공공데이터포털</b>(data.go.kr, 정부가 공개한 데이터), <b>Google Cloud 콘솔</b>(구글 서비스들)</li>
         </ul>
@@ -1656,7 +1658,7 @@ API 키는 발급받아 뒀어. 키를 넣을 위치만 알려주면 내가 직�
 
         <h3 class="sec">핵심 내용</h3>
         <ul>
-          <li><b>PWA</b> = 홈 화면에 설치되고 전체화면으로 열리는 웹앱. 아이콘으로 실행하면 겉보기엔 일반 앱과 거의 같다</li>
+          <li><b>PWA</b>(Progressive Web App의 약자, "점진적 웹 앱") = 홈 화면에 설치되고 전체화면으로 열리는 웹앱. 아이콘으로 실행하면 겉보기엔 일반 앱과 거의 같다</li>
           <li>필요한 것은 딱 두 가지 — <b>manifest</b>(앱 이름·아이콘 정보가 담긴 파일) + <b>서비스워커</b>(설치를 가능하게 해주는 스크립트). 둘 다 Claude가 만들어준다</li>
         </ul>
         <h3 class="sec">앱스토어 앱과 뭐가 다른가</h3>
@@ -1918,10 +1920,10 @@ API 키는 발급받아 뒀어. 키를 넣을 위치만 알려주면 내가 직�
             <tbody>
               <tr><td><b>프론트엔드</b></td><td>사용자 눈에 보이는 전부. HTML(뼈대)·CSS(모양)·JS(움직임)로 만든다</td></tr>
               <tr><td><b>백엔드</b></td><td>화면 뒤에서 일하는 컴퓨터(서버). 로그인 확인·주문 접수처럼 화면에 못 맡기는 일을 한다</td></tr>
-              <tr><td><b>데이터베이스(DB)</b></td><td>껐다 켜도 남아야 하는 데이터의 창고. 회원 목록·주문 내역이 여기 산다</td></tr>
-              <tr><td><b>API</b></td><td>다른 서비스의 데이터·기능을 가져다 쓰는 "주문 창구". 정해진 형식으로 요청하면 응답이 온다</td></tr>
+              <tr><td><b>데이터베이스(DB)</b></td><td>Database. 껐다 켜도 남아야 하는 데이터의 창고 — 회원 목록·주문 내역이 여기 산다</td></tr>
+              <tr><td><b>API</b></td><td>Application Programming Interface. 다른 서비스의 데이터·기능을 가져다 쓰는 "주문 창구" — 정해진 형식으로 요청하면 응답이 온다</td></tr>
               <tr><td><b>API 키</b></td><td>"요청할 자격이 있어요"를 증명하는 열쇠. 비밀번호처럼 다뤄야 한다</td></tr>
-              <tr><td><b>JSON</b></td><td>중괄호 <code>{ }</code>로 정리된 데이터 꾸러미. API 응답의 표준 형식</td></tr>
+              <tr><td><b>JSON</b></td><td>JavaScript Object Notation. 중괄호 <code>{ }</code>로 정리된 데이터 꾸러미 — API 응답의 표준 형식</td></tr>
               <tr><td><b>변수</b></td><td>값에 붙인 이름표. <code>const price = 3000</code>처럼 '가격'을 부르는 방법</td></tr>
               <tr><td><b>함수</b></td><td>이름 붙인 작업 묶음. 자주 하는 일을 한 단어로 시킨다</td></tr>
               <tr><td><b>조건문</b></td><td>"만약 ~라면"의 코드 표현(if)</td></tr>
@@ -1943,8 +1945,8 @@ API 키는 발급받아 뒀어. 키를 넣을 위치만 알려주면 내가 직�
               <tr><td><b>배포</b></td><td>내 컴퓨터에서만 열리던 것을 인터넷 주소로 누구나 볼 수 있게 공개하는 것</td></tr>
               <tr><td><b>정적 페이지</b></td><td>서버·DB 없이 HTML 파일만으로 보여주는 페이지. GitHub Pages로 배포 가능</td></tr>
               <tr><td><b>크롬 익스텐션</b></td><td>크롬 브라우저에 설치하는 작은 프로그램. 광고 차단기·번역기가 전부 이것</td></tr>
-              <tr><td><b>PWA</b></td><td>홈 화면에 설치되고 전체화면으로 열리는 웹앱. 앱스토어 심사 없이 배포</td></tr>
-              <tr><td><b>토스페이먼츠</b></td><td>카드·간편결제를 서비스에 붙여주는 한국 결제(PG) 서비스</td></tr>
+              <tr><td><b>PWA</b></td><td>Progressive Web App. 홈 화면에 설치되고 전체화면으로 열리는 웹앱 — 앱스토어 심사 없이 배포</td></tr>
+              <tr><td><b>토스페이먼츠</b></td><td>카드·간편결제를 서비스에 붙여주는 한국 PG(Payment Gateway, 결제대행) 서비스</td></tr>
               <tr><td><b>테스트 결제</b></td><td>결제 회사가 제공하는 연습용 가짜 결제. 실제 돈은 1원도 안 나간다</td></tr>
               <tr><td><b>MS Clarity</b></td><td>방문자가 내 사이트를 어떻게 쓰는지 보여주는 무료 분석 도구</td></tr>
               <tr><td><b>히트맵</b></td><td>많이 클릭된 곳일수록 빨갛게 표시되는 지도. Clarity의 대표 기능</td></tr>
