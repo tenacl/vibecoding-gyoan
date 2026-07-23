@@ -519,6 +519,13 @@
     </div>
     <a class="home-link" href="#home" data-page="home">🏠 과정 소개</a>
 
+    <div class="day-group" data-day="0">
+      <div class="day-head"><span class="dnum" style="color:var(--ink-faint)">이론 기초</span><span class="dtitle">3일 내내 참조하는 배경</span></div>
+      <a class="toc-item" href="#t1" data-page="t1"><span class="t">01</span>AI가 답하는 원리</a>
+      <a class="toc-item" href="#t2" data-page="t2"><span class="t">02</span>에이전트와 하네스</a>
+      <a class="toc-item" href="#t3" data-page="t3"><span class="t">03</span>RAG와 에이전틱 서치</a>
+    </div>
+
     <div class="day-group" data-day="1">
       <a class="day-link" href="#day1" data-page="day1"><span class="dnum">DAY 1</span><span class="dtitle">기본기 — 만들고, 고치고, 배포한다</span></a>
       <a class="toc-item" href="#d1-1" data-page="d1-1"><span class="t">09:00</span>오리엔테이션 · 바이브코딩이란</a>
@@ -629,6 +636,381 @@
           <li>각 페이지 하단의 <b>이전/다음</b> 버튼으로 수업 순서대로 넘겨볼 수 있습니다</li>
           <li>어두운 배경 상자 안의 <b>예시 프롬프트</b>는 그대로 복사해서 Claude에게 붙여넣어도 됩니다</li>
           <li>오른쪽 <b>메모장</b>은 페이지를 넘겨도 유지되고 자동 저장됩니다 — 수업이 끝나면 <b>⬇ MD로 다운받기</b>로 내 메모를 파일로 가져가세요</li>
+        </ul>
+        <div class="tipcard">목차 맨 위의 <b>「이론 기초」 3장</b>은 시간표에 묶인 세션이 아니라 <b>3일 내내 참조하는 배경 지식</b>입니다. 수업에서는 해당 실습 직전에 필요한 만큼씩 다루고, 궁금할 때 언제든 이 세 장으로 돌아오시면 됩니다.</div>
+      </article>
+
+      <!-- ═══ 이론 01 ═══ -->
+      <article class="page" id="p-t1">
+        <div class="crumb" data-day="0"><span class="cday" style="color:var(--ink-faint)">이론 기초 01</span></div>
+        <h2>AI가 답하는 원리 — 확률 기계에서 프롬프트까지</h2>
+        <p class="goal">AI가 <b>왜</b> 그렇게 답하는지 알면, <b>어떻게</b> 시켜야 하는지가 저절로 따라옵니다.</p>
+
+        <h3 class="sec">LLM은 "다음 말"을 확률로 고르는 기계</h3>
+        <ul>
+          <li>110년 동안 사람들이 붙잡은 질문은 딱 하나였습니다 — <b>"다음에 올 말은 무엇인가?"</b></li>
+          <li>마르코프(1913, 소설을 손으로 세어 통계를 냄) → 섀넌(1948, 언어는 확률의 연쇄) → 신경망 언어모델(2003) → <b>트랜스포머</b>(2017) → ChatGPT(2022) → 도구를 쥔 AI, 즉 <b>에이전트</b>(지금)</li>
+          <li>기술은 계속 바뀌었지만 원리는 그대로입니다: 앞의 말을 보고 <b>다음에 올 말을 확률로 예측</b>한다</li>
+        </ul>
+
+        <div class="diagram">
+          <svg viewBox="0 0 680 175" role="img" aria-label="문맥이 쌓일수록 확률 분포가 좁아지는 과정">
+            <text class="dg-f" x="340" y="20" text-anchor="middle">"BANANA"를 한 글자씩 예측해보면</text>
+            <rect class="dg-box" x="20" y="38" width="120" height="72" rx="9"></rect>
+            <text class="dg-t" x="80" y="62" text-anchor="middle">B</text>
+            <text class="dg-s" x="80" y="82" text-anchor="middle">A 40% · E 20%</text>
+            <text class="dg-s" x="80" y="98" text-anchor="middle">O 15% … (넓다)</text>
+            <path class="dg-arrow" d="M140 74 H172" marker-end="url(#arw)"></path>
+            <rect class="dg-box" x="177" y="38" width="120" height="72" rx="9"></rect>
+            <text class="dg-t" x="237" y="62" text-anchor="middle">BAN</text>
+            <text class="dg-s" x="237" y="82" text-anchor="middle">A 50% · K 30%</text>
+            <text class="dg-s" x="237" y="98" text-anchor="middle">D 15% (좁아짐)</text>
+            <path class="dg-arrow" d="M297 74 H329" marker-end="url(#arw)"></path>
+            <rect class="dg-hi" x="334" y="38" width="120" height="72" rx="9"></rect>
+            <text class="dg-t" x="394" y="62" text-anchor="middle">BANAN</text>
+            <text class="dg-s" x="394" y="82" text-anchor="middle">A 99%</text>
+            <text class="dg-s" x="394" y="98" text-anchor="middle">(사실상 확정)</text>
+            <path class="dg-arrow" d="M454 74 H486" marker-end="url(#arw)"></path>
+            <rect class="dg-ok" x="491" y="38" width="170" height="72" rx="9"></rect>
+            <text class="dg-t" x="576" y="66" text-anchor="middle">문맥이 쌓일수록</text>
+            <text class="dg-t" x="576" y="88" text-anchor="middle">분포가 뾰족해진다</text>
+            <text class="dg-f" x="340" y="145" text-anchor="middle">= 자료와 맥락을 많이 줄수록 답이 정확해지는 이유. 프롬프트를 잘 쓰는 일이 곧 이 분포를 좁히는 일이다</text>
+          </svg>
+        </div>
+
+        <h3 class="sec">왜 같은 질문에 매번 다른 답이 나오나 — 샘플링</h3>
+        <ul>
+          <li>AI는 확률 <b>1등만 고르지 않습니다.</b> 분포에서 <b>추첨(샘플링)</b>하기 때문에 가끔 2등, 3등도 뽑힙니다</li>
+          <li>그래서 답이 매번 달라지는 건 <b>고장이 아니라 설계</b>입니다 — 이걸 알면 "AI가 이상해졌나?"에서 멈추지 않게 됩니다</li>
+          <li><b>창의성과 환각은 같은 다이얼의 양 끝</b>입니다. 추첨 폭을 넓히면 창의적이 되고, 너무 넓히면 헛소리가 됩니다</li>
+        </ul>
+
+        <h3 class="sec">환각(할루시네이션) — 원리상 피할 수 없는 것</h3>
+        <ul>
+          <li>학습에 없는 걸 물어도 AI는 <b>"그럴듯한 다음 단어"를 계속 만들어냅니다.</b> 없는 함수, 없는 링크, 없는 판례를 자신 있게 지어내는 이유입니다</li>
+          <li>다음 단어를 확률로 예측하는 방식의 <b>필연적 결과</b>라서, 프롬프트를 잘 쓴다고 사라지지 않습니다</li>
+          <li>⚠️ <b>이 문제의 답은 이 과정 마지막에 나옵니다</b> — 지어내는 대신 <b>도구로 사실을 확인</b>하게 만드는 것(이론 03의 RAG). 지금은 "이런 문제가 있다"만 기억해두세요</li>
+        </ul>
+
+        <h3 class="sec">그래서 프롬프트는 "확률을 좁히는 행위"입니다</h3>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th></th><th>막연한 요청</th><th>구체적인 요청</th></tr></thead>
+            <tbody>
+              <tr><td><b>예시</b></td><td>"맛있는 거 주세요"</td><td>"매운 것 빼고, 둘이서 3만 원어치 주세요"</td></tr>
+              <tr><td><b>확률 분포</b></td><td>평평함 — 후보가 너무 많다</td><td>뾰족함 — 후보가 좁혀진다</td></tr>
+              <tr><td><b>결과</b></td><td>그럴듯한 <b>평균</b>이 나온다</td><td>내가 원하던 것이 나온다</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <h3 class="sec">PTCF — 프롬프트를 구체적으로 쓰는 틀</h3>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>요소</th><th>묻는 질문</th><th>예시</th></tr></thead>
+            <tbody>
+              <tr><td><b>P</b>ersona</td><td>누구로서?</td><td>"당신은 동네 카페의 마케터입니다"</td></tr>
+              <tr><td><b>T</b>ask</td><td>무엇을?</td><td>"홍보 문구를 3개 써 주세요"</td></tr>
+              <tr><td><b>C</b>ontext</td><td>어떤 상황에서?</td><td>"손님 대부분이 출근길 30대 직장인입니다"</td></tr>
+              <tr><td><b>F</b>ormat</td><td>어떤 모양으로?</td><td>"문구당 두 문장, 해시태그 3개씩"</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <ul>
+          <li>네 칸을 <b>매번 다 채울 필요는 없습니다.</b> 쓰기 전에 네 칸을 한 번 떠올리는 습관이 핵심입니다</li>
+        </ul>
+
+        <h3 class="sec">TCREI — 프롬프트를 계속 고쳐가는 틀</h3>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>요소</th><th>뜻</th><th>성격</th></tr></thead>
+            <tbody>
+              <tr><td><b>T</b>ask</td><td>할 일을 한 문장으로</td><td rowspan="3">프롬프트에 넣는 <b>재료</b></td></tr>
+              <tr><td><b>C</b>ontext</td><td>대상·배경·조건</td></tr>
+              <tr><td><b>R</b>eferences</td><td>예시·원문·양식을 함께 준다</td></tr>
+              <tr><td><b>E</b>valuate</td><td>나온 결과를 그냥 쓰지 않고 <b>채점</b>한다</td><td rowspan="2">답을 받은 뒤 <b>사람의 행동</b></td></tr>
+              <tr><td><b>I</b>terate</td><td>어긋난 부분만 짚어 <b>다시 시킨다</b></td></tr>
+            </tbody>
+          </table>
+        </div>
+        <ul>
+          <li>PTCF가 <b>잘 "쓰는" 법</b>이라면, TCREI는 <b>잘 "고쳐가는" 법</b>입니다. 한 번 쓰고 마는 프롬프트가 아니라 계속 다듬어 쓰는 프롬프트에 필요합니다</li>
+          <li><b>AI를 잘 쓰는 사람과 못 쓰는 사람은 뒤의 두 칸(E·I)에서 갈립니다.</b> 첫 결과가 마음에 안 드는 건 정상이고, 거기서 채점하고 다시 시키느냐가 실력입니다</li>
+        </ul>
+        <div class="prompt-box"><span class="plead">EXAMPLE — Evaluate → Iterate</span>1차 결과 채점: 순서 ○, 색 ○, 대표 메뉴 ✕ (세상 카페의 평균이 나옴)
+
+→ 어긋난 칸만 짚어서 다시:
+"대표 메뉴를 흑임자 라떼·수제 스콘·핸드드립으로 바꿔 주세요. 나머지는 그대로."</div>
+
+        <h3 class="sec">프롬프트를 구조화하는 3가지 형식</h3>
+        <p>형식 없는 긴 글은 AI에게 "다 한 줄"로 보입니다. 구역을 나눠주면 조건이 서로 섞이지 않습니다.</p>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>형식</th><th>비유</th><th>언제 쓰나</th><th>대표 예</th></tr></thead>
+            <tbody>
+              <tr><td><b>마크다운</b></td><td>형광펜</td><td>사람과 AI가 함께 읽는 문서 — <b>매일 씀</b></td><td>CLAUDE.md, 이 교안</td></tr>
+              <tr><td><b>XML 태그</b></td><td>벽</td><td>구역이 섞이면 안 될 때 — <b>가끔</b></td><td><code>&lt;자료&gt;붙여넣은 글&lt;/자료&gt;</code></td></tr>
+              <tr><td><b>JSON</b></td><td>자물쇠</td><td>기계끼리 주고받는 데이터 — <b>알아만 두기</b></td><td>API 응답, 툴 정의서</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="tipcard">긴 자료를 붙여넣을 땐 <code>&lt;자료&gt; … &lt;/자료&gt;</code>로 감싸세요. 이 한 줄 습관이 "AI가 자료 속 문장을 지시로 오해하는" 사고를 막아줍니다. 태그 이름은 아무거나 지어도 됩니다.</div>
+
+        <h3 class="sec">마크다운 최소 문법 5개 — 이거면 충분합니다</h3>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>쓰는 법</th><th>결과</th></tr></thead>
+            <tbody>
+              <tr><td><code># 제목</code></td><td>제목</td></tr>
+              <tr><td><code>**굵게**</code></td><td>강조</td></tr>
+              <tr><td><code>- 항목</code></td><td>목록</td></tr>
+              <tr><td><code>```코드```</code></td><td>코드 블록</td></tr>
+              <tr><td><code>[이름](주소)</code></td><td>링크</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <h3 class="sec">더 깊이 — 공식 자료</h3>
+        <ul class="reflinks">
+          <li><a href="https://arxiv.org/abs/1706.03762" target="_blank" rel="noopener">Attention Is All You Need — 트랜스포머 원논문 (2017)</a><span class="dom">arxiv.org</span></li>
+          <li><a href="https://docs.anthropic.com/en/docs/build-with-claude/prompt-engineering/overview" target="_blank" rel="noopener">프롬프트 엔지니어링 공식 문서 (Anthropic)</a><span class="dom">docs.anthropic.com</span></li>
+          <li><a href="https://blog.google/products-and-platforms/products/workspace/google-gemini-workspace-ai-prompt-tips/" target="_blank" rel="noopener">구글 공식 프롬프트 가이드 (PTCF 출처)</a><span class="dom">blog.google</span></li>
+          <li><a href="https://grow.google/prompting-essentials/" target="_blank" rel="noopener">Google Prompting Essentials (TCREI 출처)</a><span class="dom">grow.google</span></li>
+        </ul>
+      </article>
+
+      <!-- ═══ 이론 02 ═══ -->
+      <article class="page" id="p-t2">
+        <div class="crumb" data-day="0"><span class="cday" style="color:var(--ink-faint)">이론 기초 02</span></div>
+        <h2>에이전트와 하네스</h2>
+        <p class="goal">확률 기계에 <b>도구·기억·순환</b>을 붙이면 에이전트가 됩니다. 그 에이전트가 일할 환경을 짜는 것이 하네스 엔지니어링입니다.</p>
+
+        <h3 class="sec">챗봇과 에이전트 — 기준은 딱 하나</h3>
+        <p>기능 개수가 아니라 <b>"다음 단계를 누가 정하는가"</b>로 가릅니다.</p>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th></th><th>챗봇</th><th>에이전트</th></tr></thead>
+            <tbody>
+              <tr><td><b>다음 단계를 정하는 주체</b></td><td>사람</td><td>AI</td></tr>
+              <tr><td><b>비유</b></td><td>말하는 백과사전</td><td>일을 통째로 맡은 담당자</td></tr>
+              <tr><td><b>"이번 주 매출 요약해줘"</b></td><td>방법을 알려주고 끝</td><td>데이터 찾기 → 계산 → 표 만들기 → 검토를 스스로 반복</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="tipcard">앤트로픽 공식 정의도 같은 기준입니다 — <b>"에이전트는 LLM이 스스로 자신의 프로세스와 도구 사용을 지시하는 시스템"</b>이고, 미리 정해진 코드 경로를 따르는 건 워크플로우입니다. 한 문장으로는: <b>"환경 피드백을 받으며 루프 안에서 도구를 쓰는 LLM."</b></div>
+
+        <h3 class="sec">에이전트의 구성요소</h3>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>구성요소</th><th>역할</th><th>없으면</th></tr></thead>
+            <tbody>
+              <tr><td><b>추론 가능한 모델</b></td><td>다음에 뭘 할지 판단하는 두뇌</td><td>아무 결정도 못 한다</td></tr>
+              <tr><td><b>툴(도구)</b></td><td>실제로 세상을 읽고 바꾸는 손</td><td>판단만 하고 아무것도 안 바뀐다</td></tr>
+              <tr><td><b>메모리</b></td><td>지금까지 한 일과 알게 된 것을 담는 곳</td><td>매번 처음부터 다시 시작한다</td></tr>
+              <tr><td><b>(이 셋을 돌리는 루프)</b></td><td>목표를 이룰 때까지 반복하고, 다 되면 멈춘다</td><td>도구를 한 번 쓰는 챗봇에 그친다</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <h3 class="sec">GRAM 루프 — 에이전트가 도는 순환</h3>
+        <div class="diagram">
+          <svg viewBox="0 0 680 210" role="img" aria-label="GRAM 루프 순환 도식">
+            <rect class="dg-hi" x="20" y="55" width="140" height="70" rx="10"></rect>
+            <text class="dg-t" x="90" y="82" text-anchor="middle">G — 목표</text>
+            <text class="dg-s" x="90" y="102" text-anchor="middle">Goal</text>
+            <path class="dg-arrow" d="M160 90 H192" marker-end="url(#arw)"></path>
+            <rect class="dg-box" x="197" y="55" width="140" height="70" rx="10"></rect>
+            <text class="dg-t" x="267" y="82" text-anchor="middle">R — 판단</text>
+            <text class="dg-s" x="267" y="102" text-anchor="middle">Reasoning</text>
+            <path class="dg-arrow" d="M337 90 H369" marker-end="url(#arw)"></path>
+            <rect class="dg-box" x="374" y="55" width="140" height="70" rx="10"></rect>
+            <text class="dg-t" x="444" y="82" text-anchor="middle">A — 행동</text>
+            <text class="dg-s" x="444" y="102" text-anchor="middle">Action (도구 실행)</text>
+            <path class="dg-arrow" d="M514 90 H546" marker-end="url(#arw)"></path>
+            <rect class="dg-ok" x="551" y="55" width="115" height="70" rx="10"></rect>
+            <text class="dg-t" x="608" y="82" text-anchor="middle">M — 기록</text>
+            <text class="dg-s" x="608" y="102" text-anchor="middle">Memory</text>
+            <path class="dg-arrow" d="M608 125 V162 H267 V128" marker-end="url(#arw)"></path>
+            <text class="dg-f" x="437" y="182" text-anchor="middle">결과를 기록하고 다시 판단으로 — 목표를 이룰 때까지 반복</text>
+            <text class="dg-a" x="150" y="182" text-anchor="middle">다 됐나? → 종료</text>
+          </svg>
+        </div>
+        <ul>
+          <li>클로드 코드 화면에 <b>"파일 읽는 중", "명령 실행 중"</b>이 지나가면 지금 이 순환이 돌고 있는 것입니다 — 무서운 로그가 아니라 읽을 수 있는 진행 표시입니다</li>
+          <li>GRAM은 외울 표가 아니라 <b>이름표</b>입니다. "지금 Reason 중이구나", "방금 건 Action이네"라고 부를 수 있으면 충분합니다</li>
+          <li><b>영어 자료를 찾을 때는</b> — 논문·해외 문서에서는 이 순환을 보통 <b>agent loop</b>라고 부르고, 학술 원전은 <b>ReAct</b>(Reason + Act, Yao et al. 2022)입니다</li>
+        </ul>
+
+        <h3 class="sec">툴로 쓸 수 있는 것들</h3>
+        <ul>
+          <li><b>파일</b> 읽기·쓰기·수정 / <b>명령 실행</b>(터미널) / <b>검색</b>(파일 안 찾기, 웹 검색) / <b>브라우저 조작</b> / <b>외부 서비스</b>(노션, 깃허브, DB…)</li>
+          <li>외부 서비스를 붙이는 표준 규격이 <b>MCP</b>(Model Context Protocol)입니다 — AI에게 손·눈을 하나씩 달아주는 것이라고 생각하면 됩니다</li>
+        </ul>
+
+        <h3 class="sec">메모리 — 단기와 장기</h3>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th></th><th>단기 메모리</th><th>장기 메모리</th></tr></thead>
+            <tbody>
+              <tr><td><b>실체</b></td><td><b>컨텍스트 윈도우</b> — 지금 대화에 올라와 있는 것 전부</td><td><b>기록</b> — 파일에 적어둔 것</td></tr>
+              <tr><td><b>수명</b></td><td>대화가 끝나면 사라짐</td><td>다음 대화에서도 읽어서 쓸 수 있음</td></tr>
+              <tr><td><b>예</b></td><td>방금 주고받은 대화, 읽은 파일 내용</td><td>CLAUDE.md, 작업 노트, 회고 기록</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <h3 class="sec">컨텍스트 윈도우 — 왜 새 주제는 새 채팅인가</h3>
+        <ul>
+          <li>AI가 <b>한 번에 기억할 수 있는 양</b>입니다. 무한하지 않습니다</li>
+          <li>중요한 건 용량만이 아닙니다 — <b>꽉 차기 전부터 품질이 떨어집니다.</b> 시행착오와 버린 코드가 쌓이면 확률 분포가 다시 평평해져서 답이 평균으로 흐릅니다</li>
+          <li>그래서 <b>주제가 바뀌면 새 채팅</b>입니다. 넘쳐서가 아니라 <b>흐려지기 전에</b> 끊는 것입니다</li>
+        </ul>
+
+        <h3 class="sec">토큰 — 세 갈래로 나눠 보기</h3>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>구분</th><th>무엇인가</th><th>알아둘 점</th></tr></thead>
+            <tbody>
+              <tr><td><b>입력 토큰</b></td><td>내가 준 것 — 프롬프트, 파일, 이전 대화</td><td>가장 싸다. 툴 실행 결과도 다음 턴엔 입력으로 쌓인다</td></tr>
+              <tr><td><b>추론 토큰</b></td><td>AI가 답하기 전에 속으로 생각한 것</td><td><b>출력으로 과금됩니다</b> — 깊이 생각시키는 게 가장 비싸다</td></tr>
+              <tr><td><b>출력 토큰</b></td><td>화면에 보이는 답변</td><td>입력의 <b>약 5배</b> 비싸다</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="tipcard">감을 잡는 숫자 하나 — 같은 내용을 반복해서 주면 <b>캐싱</b>되어 입력 비용이 1/10로 떨어집니다. 그러면 <b>출력 토큰 1개 ≈ 캐시된 입력 토큰 50개</b>가 됩니다. "자료를 많이 읽히는 것"보다 <b>"길게 생각하고 길게 답하게 하는 것"이 훨씬 비쌉니다.</b></div>
+
+        <h3 class="sec">컨텍스트 엔지니어링</h3>
+        <ul>
+          <li>그래서 질문이 생깁니다 — <b>"이 작업에 어떤 컨텍스트를 줘야 하는가?"</b></li>
+          <li>필요한 건 넣고, 필요 없는 건 빼고, 순서를 정하는 것. 이 고민 자체를 <b>컨텍스트 엔지니어링</b>이라고 부릅니다</li>
+          <li>많이 넣는 게 좋은 게 아닙니다 — 관계없는 자료는 분포를 흐리고 비용만 늘립니다</li>
+        </ul>
+
+        <h3 class="sec">에이전트 문서 — 규칙을 어디에 적어두나</h3>
+        <p>에이전트가 지켜야 할 규칙과 기준을 적어두는 문서들입니다. <b>로드되는 시점이 서로 다르다</b>는 게 핵심입니다.</p>
+        <div class="diagram">
+          <svg viewBox="0 0 680 195" role="img" aria-label="에이전트 문서의 3단 로딩 구조">
+            <rect class="dg-box" x="30" y="30" width="620" height="130" rx="10"></rect>
+            <text class="dg-t" x="340" y="52" text-anchor="middle">컨텍스트 윈도우 (한 번에 기억하는 자리)</text>
+            <rect class="dg-warn" x="50" y="66" width="185" height="76" rx="8"></rect>
+            <text class="dg-s" x="142" y="88" text-anchor="middle" style="fill:var(--ink);font-weight:700">CLAUDE.md / AGENTS.md</text>
+            <text class="dg-s" x="142" y="108" text-anchor="middle">항상 로드</text>
+            <text class="dg-s" x="142" y="126" text-anchor="middle">→ 길면 자리를 잡아먹는다</text>
+            <rect class="dg-box" x="245" y="66" width="185" height="76" rx="8"></rect>
+            <text class="dg-s" x="337" y="88" text-anchor="middle" style="fill:var(--ink);font-weight:700">Rules</text>
+            <text class="dg-s" x="337" y="108" text-anchor="middle">해당 경로를 다룰 때만</text>
+            <text class="dg-s" x="337" y="126" text-anchor="middle">→ 조건부</text>
+            <rect class="dg-ok" x="440" y="66" width="190" height="76" rx="8"></rect>
+            <text class="dg-s" x="535" y="88" text-anchor="middle" style="fill:var(--ink);font-weight:700">Skills (SKILL.md)</text>
+            <text class="dg-s" x="535" y="108" text-anchor="middle">필요할 때 찾아서 로드</text>
+            <text class="dg-s" x="535" y="126" text-anchor="middle">→ 평소엔 한 줄만</text>
+            <text class="dg-f" x="340" y="182" text-anchor="middle">문서를 짧게 써야 하는 이유는 돈이 아니라 자리 — 지침서가 길수록 실제 작업에 쓸 컨텍스트가 줄어든다</text>
+          </svg>
+        </div>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>문서</th><th>정체</th><th>로드 시점</th></tr></thead>
+            <tbody>
+              <tr><td><b>CLAUDE.md</b><br>(범용 표준은 <b>AGENTS.md</b>)</td><td>프로젝트 규칙·기준 문서</td><td>새 작업을 시작할 때 <b>항상</b></td></tr>
+              <tr><td><b>Rules</b></td><td>주제별로 나눈 규칙 파일</td><td>해당 경로의 파일을 다룰 때만</td></tr>
+              <tr><td><b>Skills</b> (폴더 안의 <code>SKILL.md</code>)</td><td>작업 절차를 적어둔 재사용 지시서</td><td>필요할 때 <b>찾아서</b> 로드</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <ul>
+          <li>지침서가 길면 실제 작업에 쓸 컨텍스트가 줄어듭니다. 그래서 <b>길게 쓰지 말고 개념 단위로 쪼개서</b>, 필요할 때 찾아 쓰게 만드는 게 좋습니다 — <b>Skills가 정확히 그 문제를 풀려고 만들어진 기능</b>입니다</li>
+          <li>⚠️ <b>Hooks는 문서가 아닙니다.</b> 정해진 시점에 반드시 실행되는 <b>자동 명령(코드)</b>이고, 컨텍스트를 차지하지도 않습니다. 문서 3종이 <b>부탁</b>이라면 훅은 <b>강제</b>입니다</li>
+        </ul>
+
+        <h3 class="sec">하네스 엔지니어링</h3>
+        <ul>
+          <li><b>하네스</b>는 원래 말을 부릴 때 쓰는 장비입니다. 에이전트가 일할 <b>프로젝트 환경 전체를 설계하는 것</b>이 하네스 엔지니어링입니다</li>
+          <li>무엇을 짜나 — 규칙 문서(CLAUDE.md·Rules·Skills), 권한 범위, 쓸 수 있는 도구, 강제 장치(훅), 그리고 결과를 확인하는 방법</li>
+          <li>같은 AI라도 하네스가 잘 짜인 프로젝트에서 훨씬 잘 일합니다. <b>모델을 바꾸는 것보다 환경을 고치는 편이 빠를 때가 많습니다</b></li>
+        </ul>
+
+        <h3 class="sec">더 깊이 — 공식 자료</h3>
+        <ul class="reflinks">
+          <li><a href="https://www.anthropic.com/engineering/building-effective-agents" target="_blank" rel="noopener">Building Effective Agents — 에이전트 정의 (Anthropic 공식, 영문)</a><span class="dom">anthropic.com</span></li>
+          <li><a href="https://arxiv.org/abs/2210.03629" target="_blank" rel="noopener">ReAct — GRAM 루프의 학술 원전 (Yao et al. 2022)</a><span class="dom">arxiv.org</span></li>
+          <li><a href="https://code.claude.com/docs/en/memory" target="_blank" rel="noopener">CLAUDE.md(메모리) 공식 문서</a><span class="dom">code.claude.com</span></li>
+          <li><a href="https://code.claude.com/docs/en/skills" target="_blank" rel="noopener">Skill 공식 문서</a><span class="dom">code.claude.com</span></li>
+          <li><a href="https://code.claude.com/docs/en/hooks-guide" target="_blank" rel="noopener">Hooks 공식 가이드</a><span class="dom">code.claude.com</span></li>
+        </ul>
+      </article>
+
+      <!-- ═══ 이론 03 ═══ -->
+      <article class="page" id="p-t3">
+        <div class="crumb" data-day="0"><span class="cday" style="color:var(--ink-faint)">이론 기초 03</span></div>
+        <h2>RAG와 에이전틱 서치 — 환각에 대한 답</h2>
+        <p class="goal">이론 01에서 던진 문제, 기억하시나요? <b>AI는 모르는 것도 그럴듯하게 지어냅니다.</b> 그 문제의 답이 여기 있습니다.</p>
+
+        <h3 class="sec">답은 "지어내지 말고, 찾아보게 하는 것"</h3>
+        <ul>
+          <li>확률로 다음 단어를 만들어내는 대신, <b>실제 자료를 읽고 그걸 근거로 답하게</b> 만듭니다</li>
+          <li>이게 도구(툴)가 존재하는 근본적인 이유입니다 — 검색하고, 파일을 읽고, 코드를 실행해서 <b>사실을 확인</b>합니다</li>
+          <li>앤트로픽이 에이전트를 "<b>환경 피드백</b>을 받으며 루프를 도는 LLM"이라고 정의하는 이유이기도 합니다. 여기서 환경 피드백이 곧 <b>사실 확인</b>입니다</li>
+        </ul>
+
+        <h3 class="sec">RAG — 검색해서 근거를 붙인 뒤 답하기</h3>
+        <ul>
+          <li><b>RAG</b> = Retrieval-Augmented Generation. 우리말로 하면 <b>"검색으로 보강한 생성"</b>입니다</li>
+          <li>흐름은 단순합니다: 질문이 오면 → <b>관련 자료를 먼저 찾고</b> → 그 자료를 함께 넣어서 → 답하게 한다</li>
+          <li>흔한 오해 하나 — <b>RAG는 벡터 데이터베이스를 뜻하는 게 아닙니다.</b> 찾아오는 방법은 무엇이든 됩니다. 클로드 코드가 내 폴더에서 파일을 검색해 읽고 답하는 것도 넓은 의미의 RAG입니다</li>
+        </ul>
+
+        <div class="note"><b>⚠️ 가장 중요한 주의 — RAG는 환각을 없애지 않습니다.</b><br>
+        찾아온 자료 자체가 틀렸을 수도, 맞는 자료를 잘못 읽을 수도, 자료에 없는 내용을 유추해 덧붙일 수도 있습니다. RAG가 하는 일은 환각을 <b>제거</b>하는 게 아니라 <b>근거를 붙여 검증 가능하게</b> 만드는 것입니다. "RAG를 쓰면 환각이 사라진다"는 흔한 과장이고, 오히려 <b>결과를 확인하는 습관이 더 중요해집니다.</b></div>
+
+        <h3 class="sec">에이전틱 서치 — 검색을 에이전트가 스스로</h3>
+        <div class="diagram">
+          <svg viewBox="0 0 680 210" role="img" aria-label="RAG와 에이전틱 서치 비교">
+            <text class="dg-a" x="170" y="24" text-anchor="middle">RAG — 사람이 정한 방식대로 한 번 검색</text>
+            <rect class="dg-box" x="20" y="36" width="90" height="52" rx="8"></rect>
+            <text class="dg-s" x="65" y="66" text-anchor="middle" style="fill:var(--ink)">질문</text>
+            <path class="dg-arrow" d="M110 62 H140" marker-end="url(#arw)"></path>
+            <rect class="dg-box" x="145" y="36" width="90" height="52" rx="8"></rect>
+            <text class="dg-s" x="190" y="66" text-anchor="middle" style="fill:var(--ink)">검색</text>
+            <path class="dg-arrow" d="M235 62 H265" marker-end="url(#arw)"></path>
+            <rect class="dg-ok" x="270" y="36" width="90" height="52" rx="8"></rect>
+            <text class="dg-s" x="315" y="66" text-anchor="middle" style="fill:var(--ink)">답변</text>
+            <text class="dg-a" x="180" y="128" text-anchor="middle" style="fill:var(--day3)">에이전틱 서치 — 에이전트가 판단해 반복 검색</text>
+            <rect class="dg-box" x="20" y="140" width="85" height="50" rx="8"></rect>
+            <text class="dg-s" x="62" y="169" text-anchor="middle" style="fill:var(--ink)">질문</text>
+            <path class="dg-arrow" d="M105 165 H135" marker-end="url(#arw)"></path>
+            <rect class="dg-warn" x="140" y="140" width="115" height="50" rx="8"></rect>
+            <text class="dg-s" x="197" y="162" text-anchor="middle" style="fill:var(--ink)">뭘 찾을지 판단</text>
+            <text class="dg-s" x="197" y="180" text-anchor="middle">→ 검색 → 평가</text>
+            <path class="dg-arrow" d="M197 140 V118 H340 V138" marker-end="url(#arw)"></path>
+            <text class="dg-f" x="300" y="112" text-anchor="middle">부족하면 다시</text>
+            <path class="dg-arrow" d="M255 165 H290" marker-end="url(#arw)"></path>
+            <rect class="dg-ok" x="295" y="140" width="90" height="50" rx="8"></rect>
+            <text class="dg-s" x="340" y="169" text-anchor="middle" style="fill:var(--ink)">답변</text>
+            <text class="dg-f" x="530" y="112" text-anchor="middle">차이는 딱 하나 —</text>
+            <text class="dg-f" x="530" y="132" text-anchor="middle"><tspan style="font-weight:700">"무엇을 더 찾을지 누가 정하는가"</tspan></text>
+            <text class="dg-f" x="530" y="158" text-anchor="middle">챗봇과 에이전트를 가른 그 기준이</text>
+            <text class="dg-f" x="530" y="176" text-anchor="middle">검색에도 똑같이 적용된다</text>
+          </svg>
+        </div>
+        <ul>
+          <li><b>RAG</b>는 정해진 방식으로 한 번 찾아서 넣어줍니다. <b>에이전틱 서치</b>는 에이전트가 <b>무엇을 찾을지 스스로 판단하고, 결과를 보고 부족하면 다시 찾습니다</b></li>
+          <li>둘은 대체 관계가 아니라 <b>겹쳐 쓰는 관계</b>입니다 — 에이전틱 서치는 RAG에 GRAM 루프를 얹은 것이라고 보면 됩니다</li>
+          <li>기준이 낯익지 않으신가요? <b>"다음 단계를 누가 정하는가"</b> — 이론 02에서 챗봇과 에이전트를 가른 그 기준입니다</li>
+        </ul>
+
+        <h3 class="sec">컨텍스트 엔지니어링과의 관계</h3>
+        <ul>
+          <li>이론 02에서 <b>컨텍스트 엔지니어링</b>을 "어떤 컨텍스트를 줄지 고민하는 것"이라고 했습니다</li>
+          <li><b>RAG는 그 고민을 자동화한 것</b>입니다 — 사람이 매번 골라 넣던 자료를, 시스템이 질문에 맞춰 대신 찾아 넣어줍니다</li>
+          <li>컨텍스트 윈도우에 모든 걸 넣을 수 없기 때문에 필요한 기술이기도 합니다. 다 넣으면 흐려지고, 안 넣으면 지어냅니다 — 그 사이를 푸는 게 RAG입니다</li>
+        </ul>
+
+        <div class="tipcard">3일 과정 전체를 한 줄로 이으면 이렇게 됩니다 — <b>확률 기계(이론 01) → 잘 시키는 법(프롬프트) → 도구와 순환을 붙여 에이전트로(이론 02) → 사실을 확인하게 만들기(이론 03)</b>. 실습에서 만드는 모든 것이 이 사슬 위에 있습니다.</div>
+
+        <h3 class="sec">더 깊이 — 공식 자료</h3>
+        <ul class="reflinks">
+          <li><a href="https://www.anthropic.com/engineering/building-effective-agents" target="_blank" rel="noopener">Building Effective Agents (Anthropic 공식, 영문)</a><span class="dom">anthropic.com</span></li>
+          <li><a href="https://arxiv.org/abs/2005.11401" target="_blank" rel="noopener">RAG 원논문 — Retrieval-Augmented Generation (Lewis et al. 2020)</a><span class="dom">arxiv.org</span></li>
         </ul>
       </article>
 
@@ -2154,6 +2536,9 @@ API 키는 발급받아 뒀어. 키를 넣을 위치만 알려주면 내가 직�
   /* 페이지 순서와 제목 */
   var ORDER = [
     { k: "home",     t: "과정 소개" },
+    { k: "t1",       t: "이론 01 · AI가 답하는 원리" },
+    { k: "t2",       t: "이론 02 · 에이전트와 하네스" },
+    { k: "t3",       t: "이론 03 · RAG와 에이전틱 서치" },
     { k: "day1",     t: "Day 1 개요 — 기본기" },
     { k: "d1-1",     t: "오리엔테이션 · 바이브코딩이란" },
     { k: "d1-2",     t: "개발환경 구성 + 첫 페이지" },
