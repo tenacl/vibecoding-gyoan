@@ -1,0 +1,1192 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>바이브코딩 심화 — 주제별 실무 과정</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300..900&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ground: #FAF9F6;
+    --panel: #FFFFFF;
+    --panel-2: #F2F1EC;
+    --ink: #22262B;
+    --ink-soft: #5B6168;
+    --ink-faint: #8A9098;
+    --line: #E3E1DA;
+    --accent: #2F52C7;
+    --accent-ink: #FFFFFF;
+    --accent-soft: #E8EDFB;
+    --day1: #2F52C7;
+    --day2: #157A5B;
+    --day3: #C2571B;
+    --day1-soft: #E8EDFB;
+    --day2-soft: #E2F2EC;
+    --day3-soft: #FAEBE0;
+    --code-bg: #23272E;
+    --code-ink: #DDE2E9;
+    --chip-theory: #EEE9DC;
+    --chip-theory-ink: #6B5D33;
+    --chip-prac: #E2F2EC;
+    --chip-prac-ink: #135F48;
+    --chip-proj: #E8EDFB;
+    --chip-proj-ink: #24409E;
+    --shadow: 0 1px 3px rgba(30, 34, 40, .07);
+    --mono: "Cascadia Mono", Consolas, "SF Mono", monospace;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --ground: #15171B;
+      --panel: #1C1F24;
+      --panel-2: #22262C;
+      --ink: #E6E4DE;
+      --ink-soft: #A6ABB2;
+      --ink-faint: #767C84;
+      --line: #2E3339;
+      --accent: #8CA3EE;
+      --accent-ink: #131722;
+      --accent-soft: #26304A;
+      --day1: #8CA3EE;
+      --day2: #6CC5A5;
+      --day3: #E59A65;
+      --day1-soft: #242C42;
+      --day2-soft: #1E332C;
+      --day3-soft: #3A2A1D;
+      --code-bg: #111317;
+      --code-ink: #C9CFD8;
+      --chip-theory: #35311F;
+      --chip-theory-ink: #CBBE8A;
+      --chip-prac: #1E332C;
+      --chip-prac-ink: #8FD3B8;
+      --chip-proj: #242C42;
+      --chip-proj-ink: #A9BBF2;
+      --shadow: 0 1px 3px rgba(0, 0, 0, .35);
+    }
+  }
+
+  * { box-sizing: border-box; }
+  html, body { height: 100%; }
+  body {
+    margin: 0;
+    background: var(--ground);
+    color: var(--ink);
+    font-family: "Noto Sans KR", "Pretendard Variable", Pretendard, -apple-system, "Segoe UI", "Apple SD Gothic Neo", "Malgun Gothic", sans-serif;
+    font-size: 15px;
+    line-height: 1.7;
+    overflow: hidden;
+  }
+
+  .app {
+    display: grid;
+    grid-template-columns: var(--nav-w, 268px) 6px minmax(0, 1fr) 6px var(--memo-w, 300px);
+    grid-template-rows: 52px minmax(0, 1fr);
+    grid-template-areas: "top top top top top" "nav rz1 main rz2 memo";
+    height: 100vh;
+    height: 100dvh;
+  }
+
+  /* ── 패널 너비 조절 핸들 ─────────────────── */
+  .resizer {
+    cursor: col-resize;
+    background: transparent;
+    transition: background .15s;
+    z-index: 20;
+  }
+  .resizer#rz1 { grid-area: rz1; }
+  .resizer#rz2 { grid-area: rz2; }
+  .resizer:hover, .resizer.dragging { background: var(--accent-soft); }
+  .resizer:focus-visible { outline: 2px solid var(--accent); outline-offset: -2px; }
+  body.col-resizing { cursor: col-resize; user-select: none; }
+  body.col-resizing .memo textarea { pointer-events: none; }
+
+  /* ── 상단바 ─────────────────────────── */
+  .topbar {
+    grid-area: top;
+    display: flex; align-items: center; gap: 12px;
+    padding: 0 16px;
+    border-bottom: 1px solid var(--line);
+    background: var(--panel);
+  }
+  .topbar .mark {
+    font-family: var(--mono);
+    font-size: 12px; font-weight: 700;
+    color: var(--accent-ink);
+    background: var(--accent);
+    padding: 3px 8px; border-radius: 4px;
+    letter-spacing: .04em;
+    white-space: nowrap;
+  }
+  .topbar h1 {
+    font-size: 15px; font-weight: 700; margin: 0;
+    letter-spacing: -.01em;
+    white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+  }
+  .topbar .sub {
+    font-size: 12px; color: var(--ink-faint);
+    margin-left: auto; white-space: nowrap;
+  }
+  .panel-toggle {
+    display: none;
+    border: 1px solid var(--line); background: var(--panel-2);
+    color: var(--ink); border-radius: 6px;
+    font-size: 12px; font-weight: 600;
+    padding: 5px 10px; cursor: pointer;
+  }
+  .panel-toggle:focus-visible { outline: 2px solid var(--accent); outline-offset: 1px; }
+
+  /* ── 본문 글씨 크기 조절 ─────────────────── */
+  .fs-group {
+    display: inline-flex; align-items: center; gap: 2px;
+    padding: 2px; border: 1px solid var(--line); border-radius: 8px;
+    background: var(--panel-2);
+    white-space: nowrap;
+  }
+  .fs-btn {
+    border: 0; background: transparent;
+    color: var(--ink); border-radius: 6px;
+    font: inherit; font-size: 13px; font-weight: 700; line-height: 1;
+    padding: 5px 9px; cursor: pointer;
+  }
+  .fs-btn:hover { color: var(--accent); background: var(--accent-soft); }
+  .fs-btn:focus-visible { outline: 2px solid var(--accent); outline-offset: 1px; }
+  .fs-btn:disabled { color: var(--ink-faint); background: transparent; cursor: default; }
+  .fs-val {
+    min-width: 42px; padding: 4px 4px;
+    border: 0; background: transparent;
+    color: var(--ink-soft); cursor: pointer;
+    font-family: var(--mono); font-size: 11.5px; font-weight: 700;
+    text-align: center; font-variant-numeric: tabular-nums;
+  }
+  .fs-val:hover { color: var(--accent); }
+  .fs-val:focus-visible { outline: 2px solid var(--accent); outline-offset: 1px; border-radius: 5px; }
+
+  /* ── 좌측 목차 ─────────────────────────── */
+  .nav {
+    grid-area: nav;
+    overflow-y: auto;
+    border-right: 1px solid var(--line);
+    background: var(--panel);
+    padding: 12px 10px 40px;
+  }
+  .nav .filter { padding: 2px 4px 10px; }
+  .nav .filter input {
+    width: 100%;
+    border: 1px solid var(--line); border-radius: 7px;
+    background: var(--panel-2); color: var(--ink);
+    font: inherit; font-size: 13px;
+    padding: 7px 11px;
+  }
+  .nav .filter input:focus-visible { outline: 2px solid var(--accent); outline-offset: -1px; }
+  .nav a.home-link {
+    display: block;
+    padding: 7px 10px; margin-bottom: 8px;
+    border-radius: 6px;
+    text-decoration: none; color: var(--ink);
+    font-size: 13px; font-weight: 700;
+  }
+  .nav a.home-link:hover { background: var(--panel-2); }
+  .nav a.home-link.active { background: var(--accent-soft); }
+  .nav .day-group { margin-bottom: 16px; }
+  .nav a.day-link {
+    display: flex; align-items: baseline; gap: 8px;
+    padding: 6px 10px 4px;
+    border-radius: 6px;
+    text-decoration: none;
+  }
+  .nav a.day-link:hover { background: var(--panel-2); }
+  .nav a.day-link.active { background: var(--accent-soft); }
+  .nav a.day-link .dnum {
+    font-family: var(--mono);
+    font-size: 11px; font-weight: 700; letter-spacing: .08em;
+  }
+  .nav a.day-link .dtitle { font-size: 12px; color: var(--ink-soft); font-weight: 600; }
+  .day-group[data-day="1"] .dnum { color: var(--day1); }
+  .day-group[data-day="2"] .dnum { color: var(--day2); }
+  .day-group[data-day="3"] .dnum { color: var(--day3); }
+  .nav a.toc-item {
+    display: flex; gap: 9px; align-items: baseline;
+    padding: 6px 10px;
+    border-radius: 6px;
+    text-decoration: none; color: var(--ink-soft);
+    font-size: 13px; line-height: 1.4;
+    border-left: 2px solid transparent;
+  }
+  .nav a.toc-item .t {
+    font-family: var(--mono); font-size: 10.5px;
+    color: var(--ink-faint);
+    white-space: nowrap;
+    min-width: 40px;
+    font-variant-numeric: tabular-nums;
+  }
+  .nav a.toc-item:hover { background: var(--panel-2); color: var(--ink); }
+  .nav a.toc-item.active {
+    background: var(--accent-soft);
+    color: var(--ink);
+    font-weight: 600;
+  }
+  .day-group[data-day="1"] a.toc-item.active { border-left-color: var(--day1); }
+  .day-group[data-day="2"] a.toc-item.active { border-left-color: var(--day2); }
+  .day-group[data-day="3"] a.toc-item.active { border-left-color: var(--day3); }
+  .nav a:focus-visible { outline: 2px solid var(--accent); outline-offset: -2px; }
+  .nav .hidden-by-filter { display: none !important; }
+
+  /* ── 중앙 본문 ─────────────────────────── */
+  .main {
+    grid-area: main;
+    overflow-y: auto;
+  }
+  .doc {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 28px 36px 80px;
+    zoom: var(--doc-zoom, 1);
+  }
+
+  .page { display: none; }
+  .page.active { display: block; animation: pagein .18s ease; }
+  @keyframes pagein { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: none; } }
+  @media (prefers-reduced-motion: reduce) {
+    .page.active { animation: none; }
+    * { transition: none !important; }
+  }
+
+  .crumb {
+    display: flex; align-items: center; gap: 8px;
+    margin-bottom: 10px;
+  }
+  .crumb .cday {
+    font-family: var(--mono); font-size: 11.5px; font-weight: 700; letter-spacing: .08em;
+  }
+  .crumb .ctime {
+    font-family: var(--mono); font-size: 11.5px; color: var(--ink-faint);
+    font-variant-numeric: tabular-nums;
+  }
+  .crumb[data-day="1"] .cday { color: var(--day1); }
+  .crumb[data-day="2"] .cday { color: var(--day2); }
+  .crumb[data-day="3"] .cday { color: var(--day3); }
+  .chip {
+    font-size: 11px; font-weight: 700; letter-spacing: .03em;
+    padding: 2px 8px; border-radius: 99px;
+  }
+  .chip.theory { background: var(--chip-theory); color: var(--chip-theory-ink); }
+  .chip.prac   { background: var(--chip-prac);   color: var(--chip-prac-ink); }
+  .chip.proj   { background: var(--chip-proj);   color: var(--chip-proj-ink); }
+
+  .page h2 {
+    font-size: 26px; font-weight: 800; letter-spacing: -.02em;
+    line-height: 1.3; margin: 0 0 8px;
+    text-wrap: balance;
+  }
+  .page .goal {
+    font-size: 15px; color: var(--ink-soft); margin: 0 0 20px;
+    padding-bottom: 16px;
+    border-bottom: 1px solid var(--line);
+  }
+  .page h3.sec {
+    font-size: 15px; font-weight: 800; margin: 26px 0 8px;
+    letter-spacing: -.01em;
+  }
+  .page ul { margin: 0 0 8px; padding-left: 20px; }
+  .page li { margin: 6px 0; }
+  .page li::marker { color: var(--ink-faint); }
+  .page b { font-weight: 700; }
+  .page code {
+    font-family: var(--mono); font-size: .88em;
+    background: var(--panel-2);
+    border: 1px solid var(--line);
+    border-radius: 4px;
+    padding: 1px 5px;
+  }
+
+  .diagram {
+    margin: 16px 0;
+    background: var(--panel);
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    padding: 18px 14px 10px;
+    overflow-x: auto;
+    box-shadow: var(--shadow);
+  }
+  .diagram svg {
+    display: block; margin: 0 auto;
+    max-width: 100%; height: auto;
+  }
+  .diagram .dcap {
+    text-align: center;
+    font-size: 12px; color: var(--ink-faint);
+    margin-top: 8px;
+  }
+  svg text { font-family: inherit; }
+  .dg-box   { fill: var(--panel-2); stroke: var(--line); stroke-width: 1.2; }
+  .dg-hi    { fill: var(--accent-soft); stroke: var(--accent); stroke-width: 1.3; }
+  .dg-warn  { fill: var(--day3-soft); stroke: var(--day3); stroke-width: 1.3; }
+  .dg-ok    { fill: var(--day2-soft); stroke: var(--day2); stroke-width: 1.3; }
+  .dg-t  { fill: var(--ink); font-size: 13px; font-weight: 700; }
+  .dg-s  { fill: var(--ink-soft); font-size: 10.5px; }
+  .dg-f  { fill: var(--ink-faint); font-size: 10.5px; }
+  .dg-a  { fill: var(--accent); font-size: 11px; font-weight: 700; }
+  .dg-arrow { stroke: var(--ink-faint); stroke-width: 1.5; fill: none; }
+
+  .practice {
+    margin-top: 18px;
+    background: var(--panel);
+    border: 1px solid var(--line);
+    border-left: 3px solid var(--day2);
+    border-radius: 8px;
+    padding: 14px 18px;
+    box-shadow: var(--shadow);
+  }
+  .practice .plabel {
+    font-size: 11px; font-weight: 800; letter-spacing: .08em;
+    color: var(--chip-prac-ink);
+    margin-bottom: 6px;
+  }
+  .practice ol { margin: 0; padding-left: 20px; }
+  .practice ol li { margin: 5px 0; font-size: 13.5px; }
+
+  .prompt-box {
+    margin-top: 12px;
+    background: var(--code-bg); color: var(--code-ink);
+    border-radius: 8px;
+    padding: 12px 14px;
+    font-family: var(--mono); font-size: 12.5px; line-height: 1.6;
+    overflow-x: auto;
+    white-space: pre-wrap;
+  }
+  .prompt-box .plead {
+    display: block;
+    color: #8BA1C4; font-size: 10.5px; letter-spacing: .08em;
+    margin-bottom: 6px; font-weight: 700;
+  }
+
+  .tipcard {
+    margin-top: 14px;
+    border-left: 3px solid var(--accent);
+    background: var(--accent-soft);
+    border-radius: 0 8px 8px 0;
+    padding: 10px 14px;
+    font-size: 13.5px; line-height: 1.6;
+  }
+
+  .table-wrap { overflow-x: auto; margin: 12px 0; }
+  table { border-collapse: collapse; width: 100%; font-size: 13.5px; }
+  th, td { border: 1px solid var(--line); padding: 8px 12px; text-align: left; }
+  th { background: var(--panel-2); font-size: 12px; letter-spacing: .02em; }
+  td { font-variant-numeric: tabular-nums; }
+  td a { color: var(--accent); text-decoration: none; font-weight: 600; }
+  td a:hover { text-decoration: underline; }
+
+  .reflinks { list-style: none; padding: 0; margin: 8px 0 0; }
+  .reflinks li {
+    display: flex; align-items: baseline; gap: 8px; flex-wrap: wrap;
+    padding: 7px 0;
+    border-bottom: 1px dashed var(--line);
+    font-size: 13.5px;
+  }
+  .reflinks li:last-child { border-bottom: 0; }
+  .reflinks a { color: var(--accent); font-weight: 650; text-decoration: none; }
+  .reflinks a:hover { text-decoration: underline; }
+  .reflinks .dom { font-size: 11.5px; color: var(--ink-faint); font-family: var(--mono); }
+
+  .checklist { list-style: none; padding: 0; margin: 0; }
+  .checklist li {
+    padding: 8px 0 8px 28px; position: relative;
+    border-bottom: 1px dashed var(--line);
+  }
+  .checklist li:last-child { border-bottom: 0; }
+  .checklist li::before {
+    content: ""; position: absolute; left: 2px; top: 14px;
+    width: 14px; height: 14px;
+    border: 1.5px solid var(--ink-faint); border-radius: 4px;
+  }
+
+  /* 홈 화면 */
+  .home-head .eyebrow {
+    font-family: var(--mono); font-size: 11px; letter-spacing: .12em;
+    color: var(--accent); font-weight: 700;
+  }
+  .home-head h2 { font-size: 32px; margin-top: 6px; }
+  .principles {
+    display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px;
+    margin: 20px 0;
+  }
+  .principles .p {
+    background: var(--panel); border: 1px solid var(--line); border-radius: 8px;
+    padding: 12px 14px; font-size: 13px; line-height: 1.55;
+    box-shadow: var(--shadow);
+  }
+  .principles .p b { display: block; font-size: 12.5px; margin-bottom: 3px; }
+  .daycards { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin: 14px 0; }
+  a.daycard {
+    display: block;
+    background: var(--panel); border: 1px solid var(--line); border-radius: 10px;
+    border-top: 3px solid var(--line);
+    padding: 14px 16px;
+    text-decoration: none; color: var(--ink);
+    box-shadow: var(--shadow);
+  }
+  a.daycard:hover { border-color: var(--accent); }
+  a.daycard .dn { font-family: var(--mono); font-size: 11px; font-weight: 700; letter-spacing: .08em; }
+  a.daycard[data-day="1"] { border-top-color: var(--day1); } a.daycard[data-day="1"] .dn { color: var(--day1); }
+  a.daycard[data-day="2"] { border-top-color: var(--day2); } a.daycard[data-day="2"] .dn { color: var(--day2); }
+  a.daycard[data-day="3"] { border-top-color: var(--day3); } a.daycard[data-day="3"] .dn { color: var(--day3); }
+  a.daycard .dt { font-size: 14.5px; font-weight: 750; margin: 3px 0 5px; letter-spacing: -.01em; }
+  a.daycard .dd { font-size: 12.5px; color: var(--ink-soft); line-height: 1.55; }
+
+  /* Day 개요 페이지 */
+  .day-banner {
+    display: flex; align-items: baseline; gap: 12px; margin-bottom: 6px;
+  }
+  .day-banner .dnum { font-family: var(--mono); font-size: 13px; font-weight: 700; letter-spacing: .1em; }
+  .day-banner[data-day="1"] .dnum { color: var(--day1); }
+  .day-banner[data-day="2"] .dnum { color: var(--day2); }
+  .day-banner[data-day="3"] .dnum { color: var(--day3); }
+  .deliv {
+    margin: 10px 0 4px;
+    font-size: 13.5px; color: var(--ink-soft);
+    background: var(--panel); border: 1px solid var(--line); border-radius: 8px;
+    padding: 10px 14px;
+  }
+  .deliv b { color: var(--ink); }
+
+  /* 이전/다음 페이지 이동 */
+  .pager {
+    display: flex; gap: 10px; justify-content: space-between;
+    margin-top: 36px;
+    padding-top: 18px;
+    border-top: 1px solid var(--line);
+  }
+  .pager a {
+    flex: 1;
+    max-width: 48%;
+    display: block;
+    background: var(--panel); border: 1px solid var(--line); border-radius: 10px;
+    padding: 10px 14px;
+    text-decoration: none; color: var(--ink);
+    box-shadow: var(--shadow);
+  }
+  .pager a:hover { border-color: var(--accent); }
+  .pager a .pk { font-size: 11px; color: var(--ink-faint); font-weight: 700; letter-spacing: .05em; }
+  .pager a .pt { font-size: 13.5px; font-weight: 700; margin-top: 2px; letter-spacing: -.01em; }
+  .pager a.next { margin-left: auto; text-align: right; }
+  .pager a:focus-visible { outline: 2px solid var(--accent); outline-offset: 1px; }
+
+  /* ── 우측 메모장 ─────────────────────────── */
+  .memo {
+    grid-area: memo;
+    display: flex; flex-direction: column;
+    border-left: 1px solid var(--line);
+    background: var(--panel);
+    min-height: 0;
+  }
+  .memo-head {
+    display: flex; align-items: center; justify-content: space-between; gap: 8px;
+    padding: 10px 14px;
+    border-bottom: 1px solid var(--line);
+  }
+  .memo-head .mt { font-size: 13.5px; font-weight: 750; }
+  .memo-dl {
+    border: 1px solid var(--line); background: var(--panel-2);
+    color: var(--ink); border-radius: 7px;
+    font: inherit; font-size: 12px; font-weight: 700;
+    padding: 5px 10px; cursor: pointer;
+    white-space: nowrap;
+  }
+  .memo-dl:hover { border-color: var(--accent); color: var(--accent); }
+  .memo-dl:focus-visible { outline: 2px solid var(--accent); outline-offset: 1px; }
+  .memo textarea {
+    flex: 1; min-height: 0;
+    border: 0; resize: none;
+    background: var(--panel); color: var(--ink);
+    font: inherit; font-size: 13.5px; line-height: 1.7;
+    padding: 14px 16px;
+  }
+  .memo textarea:focus-visible { outline: none; }
+  .memo textarea::placeholder { color: var(--ink-faint); }
+  .memo-foot {
+    padding: 8px 14px;
+    border-top: 1px solid var(--line);
+    font-size: 11.5px; color: var(--ink-faint);
+    display: flex; justify-content: space-between; gap: 8px;
+  }
+
+  /* ── 반응형 ─────────────────────────── */
+  @media (max-width: 1180px) {
+    .app {
+      grid-template-columns: minmax(0, 1fr);
+      grid-template-areas: "top" "main";
+    }
+    .resizer { display: none; }
+    .panel-toggle { display: inline-block; }
+    .nav, .memo {
+      position: fixed; top: 52px; bottom: 0; z-index: 30;
+      width: min(320px, 88vw);
+      box-shadow: 0 8px 32px rgba(0,0,0,.25);
+      transition: transform .2s ease;
+    }
+    .nav { left: 0; transform: translateX(-105%); }
+    .memo { right: 0; border-left: 1px solid var(--line); transform: translateX(105%); }
+    .nav.open, .memo.open { transform: translateX(0); }
+    .doc { padding: 22px 18px 70px; }
+    .principles, .daycards { grid-template-columns: 1fr; }
+    .topbar .sub { display: none; }
+    .fs-val { display: none; }
+    .pager { flex-direction: column; }
+    .pager a { max-width: 100%; }
+  }
+
+  /* ── 강사용 관리자 모드 ─────────────────── */
+  #adminBar { display: none; }
+  body.is-admin #adminBar {
+    display: flex; align-items: center; gap: 12px; flex-wrap: wrap;
+    position: fixed; left: 0; right: 0; bottom: 0; z-index: 60;
+    padding: 8px 14px;
+    background: #1f2430; color: #f2f3f1;
+    border-top: 2px solid var(--accent);
+    font-size: 12.5px;
+    box-shadow: 0 -4px 20px rgba(0,0,0,.25);
+  }
+  #adminBar .ab-badge { font-weight: 800; letter-spacing: .02em; white-space: nowrap; }
+  #adminBar .ab-sep { width: 1px; height: 20px; background: rgba(255,255,255,.2); }
+  #adminBar .ab-group { display: flex; align-items: center; gap: 6px; }
+  #adminBar button {
+    font: inherit; font-size: 12px; font-weight: 700;
+    color: #f2f3f1; background: rgba(255,255,255,.08);
+    border: 1px solid rgba(255,255,255,.25); border-radius: 6px;
+    padding: 5px 9px; cursor: pointer; white-space: nowrap;
+  }
+  #adminBar button:hover { background: rgba(255,255,255,.18); }
+  #adminBar button:focus-visible { outline: 2px solid var(--accent); outline-offset: 1px; }
+  #adminBar .lockbtn.locked { background: #b5462f; border-color: #d16a4f; }
+  #adminBar .lockbtn.locked::before { content: "🔒 "; }
+  #adminBar .lockbtn:not(.locked)::before { content: "🔓 "; opacity: .7; }
+  #adminBar label.ab-done { display: flex; align-items: center; gap: 6px; cursor: pointer; user-select: none; white-space: nowrap; }
+  #adminBar #abProg { opacity: .85; white-space: nowrap; }
+  #adminBar #abExit { margin-left: auto; }
+
+  #abNotePop { display: none; }
+  body.is-admin #abNotePop.open {
+    display: block; position: fixed; right: 14px; bottom: 54px; z-index: 61;
+    width: min(420px, 92vw);
+    background: #fff; color: var(--ink);
+    border: 1px solid var(--line); border-radius: 10px;
+    box-shadow: 0 12px 40px rgba(0,0,0,.28);
+    padding: 12px;
+  }
+  #abNotePop .np-head { font-size: 12px; font-weight: 800; color: var(--ink-soft); margin-bottom: 8px; }
+  #abNotePop textarea {
+    width: 100%; min-height: 120px; resize: vertical;
+    border: 1px solid var(--line); border-radius: 8px;
+    font: inherit; font-size: 13.5px; line-height: 1.6; padding: 10px;
+    background: #fffbe9; color: var(--ink);
+  }
+  body.is-admin .doc { padding-bottom: 120px; }
+
+  /* 완료 표시 (목차) */
+  .nav a.toc-item.done::after {
+    content: "✓"; margin-left: auto;
+    color: var(--day2); font-weight: 800; font-size: 12px;
+  }
+
+  /* 잠금 — 비관리자 화면: 목차 숨김 + 본문 잠금 안내 */
+  body:not(.is-admin) .day-group.locked a.toc-item { display: none; }
+  body:not(.is-admin) .day-group.locked a.day-link { opacity: .5; }
+  body:not(.is-admin) .day-group.locked a.day-link .dtitle::after { content: " · 🔒 준비 중"; }
+  body.is-admin .day-group.locked a.day-link .dtitle::after { content: " · 🔒"; color: #d16a4f; }
+
+  #lockNotice { display: none; }
+  .main.locked-view #lockNotice {
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    text-align: center; gap: 8px; min-height: 60vh; padding: 40px 20px; color: var(--ink-soft);
+  }
+  .main.locked-view .doc { display: none; }
+  #lockNotice .lk-ico { font-size: 42px; }
+  #lockNotice .lk-title { font-size: 18px; font-weight: 800; color: var(--ink); }
+</style>
+</head>
+<body>
+
+<!-- 공용 SVG 화살촉 정의 -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <marker id="arw" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0 0 L10 5 L0 10 z" style="fill: var(--ink-faint)"></path>
+    </marker>
+  </defs>
+</svg>
+
+<div class="app">
+  <header class="topbar">
+    <button class="panel-toggle" id="btnNav" aria-label="목차 열기">☰ 목차</button>
+    <span class="mark">VIBE 심화</span>
+    <h1>바이브코딩 심화 — 주제별 실무 과정</h1>
+    <span class="sub">주제별 챕터 · 실무 참조 교재</span>
+    <div class="fs-group" role="group" aria-label="본문 글씨 크기">
+      <button class="fs-btn" id="fsMinus" type="button" aria-label="본문 글씨 작게">A−</button>
+      <button class="fs-val" id="fsVal" type="button" aria-label="본문 글씨 기본크기로" title="클릭하면 기본크기(100%)로">100%</button>
+      <button class="fs-btn" id="fsPlus" type="button" aria-label="본문 글씨 크게">A＋</button>
+    </div>
+    <button class="panel-toggle" id="btnMemo" aria-label="메모장 열기">📝 메모</button>
+  </header>
+
+  <!-- ══════════ 좌측: 목차 ══════════ -->
+  <nav class="nav" id="toc" aria-label="심화 과정 목차">
+    <div class="filter">
+      <input id="tocFilter" type="search" placeholder="🔍 내용 검색 (예: 배포, API, 크롤링)" aria-label="목차 검색">
+    </div>
+    <a class="home-link" href="#home" data-page="home">🏠 과정 소개</a>
+
+    <div class="day-group" data-day="0">
+      <div class="day-head"><span class="dnum" style="color:var(--ink-faint)">C1</span><span class="dtitle">프론트엔드 프레임워크</span></div>
+      <a class="toc-item" href="#c1" data-page="c1"><span class="t">개요</span>프론트엔드 프레임워크</a>
+    </div>
+
+    <div class="day-group" data-day="0">
+      <div class="day-head"><span class="dnum" style="color:var(--ink-faint)">C2</span><span class="dtitle">디자인 도구와 라이브러리</span></div>
+      <a class="toc-item" href="#c2" data-page="c2"><span class="t">개요</span>디자인 도구와 라이브러리</a>
+    </div>
+
+    <div class="day-group" data-day="0">
+      <div class="day-head"><span class="dnum" style="color:var(--ink-faint)">C3</span><span class="dtitle">에이전트 심화</span></div>
+      <a class="toc-item" href="#c3" data-page="c3"><span class="t">개요</span>에이전트 심화</a>
+    </div>
+
+    <div class="day-group" data-day="0">
+      <div class="day-head"><span class="dnum" style="color:var(--ink-faint)">C4</span><span class="dtitle">데이터베이스</span></div>
+      <a class="toc-item" href="#c4" data-page="c4"><span class="t">개요</span>데이터베이스</a>
+    </div>
+
+    <div class="day-group" data-day="0">
+      <div class="day-head"><span class="dnum" style="color:var(--ink-faint)">C5</span><span class="dtitle">크롤링과 자동화</span></div>
+      <a class="toc-item" href="#c5" data-page="c5"><span class="t">개요</span>크롤링과 자동화</a>
+    </div>
+
+    <div class="day-group" data-day="0">
+      <div class="day-head"><span class="dnum" style="color:var(--ink-faint)">C6</span><span class="dtitle">데스크톱 앱</span></div>
+      <a class="toc-item" href="#c6" data-page="c6"><span class="t">개요</span>데스크톱 앱 (Electron)</a>
+    </div>
+
+    <div class="day-group" data-day="0">
+      <div class="day-head"><span class="dnum" style="color:var(--ink-faint)">C7</span><span class="dtitle">API 실전</span></div>
+      <a class="toc-item" href="#c7" data-page="c7"><span class="t">개요</span>API 실전</a>
+    </div>
+
+    <div class="day-group" data-day="0">
+      <div class="day-head"><span class="dnum" style="color:var(--ink-faint)">C8</span><span class="dtitle">배포 심화</span></div>
+      <a class="toc-item" href="#c8" data-page="c8"><span class="t">개요</span>배포 심화</a>
+    </div>
+  </nav>
+
+  <!-- ══════════ 중앙: 페이지 ══════════ -->
+  <div class="resizer" id="rz1" role="separator" aria-orientation="vertical" aria-label="목차 너비 조절 (드래그, 화살표 키, 더블클릭으로 초기화)" tabindex="0"></div>
+
+  <main class="main" id="main">
+    <div class="doc">
+
+      <!-- ═══ 홈: 과정 소개 ═══ -->
+      <article class="page" id="p-home">
+        <div class="home-head">
+          <div class="eyebrow">WITH CLAUDE CODE · ADVANCED TRACK</div>
+          <h2>바이브코딩 심화 — 주제별 실무 과정</h2>
+        </div>
+        <p>입문 과정을 마친 뒤, <b>실무에서 자주 부딪히는 주제</b>를 하나씩 깊게 파고드는 참조 교재입니다. "일(day)" 단위가 아니라 <b>주제별 챕터</b>로 구성되어, 필요한 주제만 골라 볼 수 있습니다.</p>
+        <div class="tipcard">📌 이 교재는 현재 <b>골격(스켈레톤)</b> 상태입니다 — 각 챕터는 순차적으로 실습·프롬프트·프로젝트로 채워집니다.</div>
+
+        <h3 class="sec">8개 챕터</h3>
+        <div class="daycards">
+          <a class="daycard" data-day="1" href="#c1" data-page="c1"><span class="dn">C1</span><div class="dt">프론트엔드 프레임워크</div><div class="dd">React · Next.js · Tailwind · shadcn</div></a>
+          <a class="daycard" data-day="2" href="#c2" data-page="c2"><span class="dn">C2</span><div class="dt">디자인 도구와 라이브러리</div><div class="dd">v0 · 볼트 · shadcn · tweakcn · 스티치</div></a>
+          <a class="daycard" data-day="3" href="#c3" data-page="c3"><span class="dn">C3</span><div class="dt">에이전트 심화</div><div class="dd">CLAUDE.md/AGENTS.md · 스킬 · 서브에이전트 · MCP</div></a>
+          <a class="daycard" data-day="1" href="#c4" data-page="c4"><span class="dn">C4</span><div class="dt">데이터베이스</div><div class="dd">ORM · Prisma · Supabase · 소셜로그인 · 클린아키텍처</div></a>
+          <a class="daycard" data-day="2" href="#c5" data-page="c5"><span class="dn">C5</span><div class="dt">크롤링과 자동화</div><div class="dd">개발자도구 · 오토브라우징 · 엑셀/PDF/메일/유튜브</div></a>
+          <a class="daycard" data-day="3" href="#c6" data-page="c6"><span class="dn">C6</span><div class="dt">데스크톱 앱</div><div class="dd">Electron · GUI 빌드</div></a>
+          <a class="daycard" data-day="1" href="#c7" data-page="c7"><span class="dn">C7</span><div class="dt">API 실전</div><div class="dd">외부 API 프로젝트 모음</div></a>
+          <a class="daycard" data-day="2" href="#c8" data-page="c8"><span class="dn">C8</span><div class="dt">배포 심화</div><div class="dd">Vercel · GitHub CLI · 환경변수 · 보안</div></a>
+        </div>
+
+        <div class="tipcard">왼쪽 목차나 위 카드에서 챕터를 선택해 이동하세요. 키보드 좌우 화살표(← →)로도 페이지를 넘길 수 있습니다.</div>
+      </article>
+
+      <!-- ═══ C1 ═══ -->
+      <article class="page" id="p-c1">
+        <div class="crumb" data-day="0"><span class="cday" style="color:var(--ink-faint)">C1</span></div>
+        <h2>프론트엔드 프레임워크 — React · Next.js · Tailwind · shadcn</h2>
+        <p class="goal">순수 HTML/CSS를 넘어 컴포넌트 기반으로 화면을 만드는 법. React·Next.js의 기본 개념과, Tailwind·shadcn으로 빠르게 UI를 조립하는 실무 흐름을 다룹니다.</p>
+        <div class="tipcard">이 챕터는 준비 중입니다 — 곧 실습·프롬프트로 채워집니다.</div>
+      </article>
+
+      <!-- ═══ C2 ═══ -->
+      <article class="page" id="p-c2">
+        <div class="crumb" data-day="0"><span class="cday" style="color:var(--ink-faint)">C2</span></div>
+        <h2>디자인 도구와 라이브러리 — v0 · 볼트 · shadcn · tweakcn · 스티치</h2>
+        <p class="goal">AI 디자인 생성 도구(v0·Bolt·스티치)와 컴포넌트/테마 라이브러리(shadcn·tweakcn)를 엮어, 보기 좋은 화면을 빠르게 만드는 방법을 다룹니다.</p>
+        <div class="tipcard">이 챕터는 준비 중입니다 — 곧 실습·프롬프트로 채워집니다.</div>
+      </article>
+
+      <!-- ═══ C3 ═══ -->
+      <article class="page" id="p-c3">
+        <div class="crumb" data-day="0"><span class="cday" style="color:var(--ink-faint)">C3</span></div>
+        <h2>에이전트 심화 — CLAUDE.md/AGENTS.md · 스킬 · 서브에이전트 · MCP</h2>
+        <p class="goal">에이전트를 내 방식대로 길들이는 방법. 지침 파일, 재사용 스킬, 서브에이전트 위임, MCP 서버 연결까지 실무 자동화의 핵심을 다룹니다.</p>
+        <div class="tipcard">이 챕터는 준비 중입니다 — 곧 실습·프롬프트로 채워집니다.</div>
+      </article>
+
+      <!-- ═══ C4 ═══ -->
+      <article class="page" id="p-c4">
+        <div class="crumb" data-day="0"><span class="cday" style="color:var(--ink-faint)">C4</span></div>
+        <h2>데이터베이스 — ORM · Prisma · Supabase · 소셜로그인 · 노션 클론 · 클린아키텍처</h2>
+        <p class="goal">데이터를 저장하고 다루는 백엔드의 핵심. ORM·Prisma로 DB를 다루고, Supabase로 인증·소셜로그인을 붙이며, 클린아키텍처로 구조를 잡습니다.</p>
+        <div class="tipcard">이 챕터는 준비 중입니다 — 곧 실습·프롬프트로 채워집니다.</div>
+      </article>
+
+      <!-- ═══ C5 ═══ -->
+      <article class="page" id="p-c5">
+        <div class="crumb" data-day="0"><span class="cday" style="color:var(--ink-faint)">C5</span></div>
+        <h2>크롤링과 자동화 — 개발자도구 · 오토브라우징 · 엑셀/PDF/메일/유튜브 자동화</h2>
+        <p class="goal">웹에서 데이터를 긁어오고 반복 업무를 자동화하는 법. 개발자도구 활용, 브라우저 자동화, 그리고 엑셀·PDF·메일·유튜브 실무 자동화를 다룹니다.</p>
+        <div class="tipcard">이 챕터는 준비 중입니다 — 곧 실습·프롬프트로 채워집니다.</div>
+      </article>
+
+      <!-- ═══ C6 ═══ -->
+      <article class="page" id="p-c6">
+        <div class="crumb" data-day="0"><span class="cday" style="color:var(--ink-faint)">C6</span></div>
+        <h2>데스크톱 앱 — Electron · GUI 빌드</h2>
+        <p class="goal">웹 기술로 진짜 설치되는 데스크톱 프로그램을 만드는 법. Electron으로 GUI 앱을 만들고 빌드·배포하는 흐름을 다룹니다.</p>
+        <div class="tipcard">이 챕터는 준비 중입니다 — 곧 실습·프롬프트로 채워집니다.</div>
+      </article>
+
+      <!-- ═══ C7 ═══ -->
+      <article class="page" id="p-c7">
+        <div class="crumb" data-day="0"><span class="cday" style="color:var(--ink-faint)">C7</span></div>
+        <h2>API 실전 — 외부 API 프로젝트 모음</h2>
+        <p class="goal">다양한 외부 API를 실제로 붙여보며 감을 익히는 챕터. 여러 실전 프로젝트를 모아 API 연동 패턴을 손에 익힙니다.</p>
+        <div class="tipcard">이 챕터는 준비 중입니다 — 곧 실습·프롬프트로 채워집니다.</div>
+      </article>
+
+      <!-- ═══ C8 ═══ -->
+      <article class="page" id="p-c8">
+        <div class="crumb" data-day="0"><span class="cday" style="color:var(--ink-faint)">C8</span></div>
+        <h2>배포 심화 — Vercel · GitHub CLI · 환경변수 · 보안</h2>
+        <p class="goal">만든 서비스를 안전하게 세상에 올리는 법. Vercel 배포, GitHub CLI 워크플로, 환경변수 관리와 기본 보안 원칙을 다룹니다.</p>
+        <div class="tipcard">이 챕터는 준비 중입니다 — 곧 실습·프롬프트로 채워집니다.</div>
+      </article>
+
+      <!-- 이전/다음 -->
+      <div class="pager" id="pager"></div>
+
+    </div>
+  </main>
+
+  <div class="resizer" id="rz2" role="separator" aria-orientation="vertical" aria-label="메모 너비 조절 (드래그, 화살표 키, 더블클릭으로 초기화)" tabindex="0"></div>
+
+  <!-- ══════════ 우측: 메모장 ══════════ -->
+  <aside class="memo" id="memo" aria-label="내 메모장">
+    <div class="memo-head">
+      <span class="mt">📝 내 메모</span>
+      <button class="memo-dl" id="memoDl" title="메모를 마크다운 파일로 저장">⬇ MD로 다운받기</button>
+    </div>
+    <textarea id="memoText" placeholder="수업 들으며 자유롭게 메모하세요.
+
+- 페이지를 넘겨도 메모는 그대로 유지됩니다
+- 이 브라우저에 자동 저장됩니다
+- 우상단 버튼으로 언제든 파일로 받아갈 수 있어요" aria-label="메모 입력"></textarea>
+    <div class="memo-foot">
+      <span id="memoStatus">자동 저장</span>
+      <span id="memoCount"></span>
+    </div>
+  </aside>
+</div>
+
+<script>
+(function () {
+  "use strict";
+
+  /* 페이지 순서와 제목 */
+  var ORDER = [
+    { k: "home",     t: "과정 소개" },
+    { k: "c1",       t: "C1 · 프론트엔드 프레임워크" },
+    { k: "c2",       t: "C2 · 디자인 도구와 라이브러리" },
+    { k: "c3",       t: "C3 · 에이전트 심화 (지침·스킬·서브에이전트·MCP)" },
+    { k: "c4",       t: "C4 · 데이터베이스 (ORM·Supabase·클린아키텍처)" },
+    { k: "c5",       t: "C5 · 크롤링과 자동화" },
+    { k: "c6",       t: "C6 · 데스크톱 앱 (Electron)" },
+    { k: "c7",       t: "C7 · API 실전" },
+    { k: "c8",       t: "C8 · 배포 심화 (Vercel·CLI·보안)" }
+  ];
+  var KEYS = ORDER.map(function (o) { return o.k; });
+
+  var main = document.getElementById("main");
+  var nav = document.getElementById("toc");
+  var pager = document.getElementById("pager");
+  var navLinks = Array.prototype.slice.call(nav.querySelectorAll("a[data-page]"));
+
+  function currentKey() {
+    var h = location.hash.replace("#", "");
+    return KEYS.indexOf(h) >= 0 ? h : "home";
+  }
+
+  function show(key) {
+    var pages = document.querySelectorAll(".page");
+    for (var i = 0; i < pages.length; i++) pages[i].classList.remove("active");
+    var page = document.getElementById("p-" + key);
+    if (page) page.classList.add("active");
+
+    navLinks.forEach(function (a) {
+      a.classList.toggle("active", a.getAttribute("data-page") === key);
+    });
+    var activeLink = nav.querySelector("a.active");
+    if (activeLink) {
+      var lt = activeLink.offsetTop, lb = lt + activeLink.offsetHeight;
+      if (lt < nav.scrollTop || lb > nav.scrollTop + nav.clientHeight) {
+        nav.scrollTop = lt - nav.clientHeight / 2;
+      }
+    }
+
+    var idx = KEYS.indexOf(key);
+    var html = "";
+    if (idx > 0) {
+      html += '<a class="prev" href="#' + ORDER[idx - 1].k + '"><span class="pk">← 이전</span><div class="pt">' + ORDER[idx - 1].t + "</div></a>";
+    }
+    if (idx < ORDER.length - 1) {
+      html += '<a class="next" href="#' + ORDER[idx + 1].k + '"><span class="pk">다음 →</span><div class="pt">' + ORDER[idx + 1].t + "</div></a>";
+    }
+    pager.innerHTML = html;
+
+    main.scrollTop = 0;
+    nav.classList.remove("open");
+  }
+
+  window.addEventListener("hashchange", function () { show(currentKey()); });
+  show(currentKey());
+
+  /* 키보드 좌우 화살표로 이전/다음 */
+  document.addEventListener("keydown", function (e) {
+    if (e.target.tagName === "INPUT" || e.target.tagName === "TEXTAREA") return;
+    var idx = KEYS.indexOf(currentKey());
+    if (e.key === "ArrowRight" && idx < KEYS.length - 1) location.hash = KEYS[idx + 1];
+    if (e.key === "ArrowLeft" && idx > 0) location.hash = KEYS[idx - 1];
+  });
+
+  /* 목차 검색 필터 */
+  var filter = document.getElementById("tocFilter");
+  filter.addEventListener("input", function () {
+    var q = filter.value.trim().toLowerCase();
+    navLinks.forEach(function (a) {
+      if (a.classList.contains("day-link") || a.classList.contains("home-link")) return;
+      var hit = !q || a.textContent.toLowerCase().indexOf(q) >= 0;
+      a.classList.toggle("hidden-by-filter", !hit);
+    });
+  });
+
+  /* 모바일 패널 토글 */
+  var memo = document.getElementById("memo");
+  document.getElementById("btnNav").addEventListener("click", function () {
+    memo.classList.remove("open");
+    nav.classList.toggle("open");
+  });
+  document.getElementById("btnMemo").addEventListener("click", function () {
+    nav.classList.remove("open");
+    memo.classList.toggle("open");
+  });
+  main.addEventListener("click", function () {
+    nav.classList.remove("open");
+    memo.classList.remove("open");
+  });
+
+  /* ── 패널 너비 조절 (드래그 · 화살표 키 · 더블클릭 초기화) ── */
+  (function () {
+    var app = document.querySelector(".app");
+    if (!app) return;
+    var LS_W = "vibeadv-panelw-v1";
+    var MIN_NAV = 180, MAX_NAV = 520, MIN_MEMO = 200, MAX_MEMO = 640;
+    var DEF_NAV = 268, DEF_MEMO = 300;
+    function clamp(v, lo, hi) { return Math.max(lo, Math.min(hi, v)); }
+    function readW(name, def) {
+      var n = parseInt(getComputedStyle(app).getPropertyValue(name), 10);
+      return isNaN(n) ? def : n;
+    }
+    function setNav(px) { app.style.setProperty("--nav-w", clamp(px, MIN_NAV, MAX_NAV) + "px"); }
+    function setMemo(px) { app.style.setProperty("--memo-w", clamp(px, MIN_MEMO, MAX_MEMO) + "px"); }
+    function save() {
+      try { localStorage.setItem(LS_W, JSON.stringify({ nav: readW("--nav-w", DEF_NAV), memo: readW("--memo-w", DEF_MEMO) })); } catch (e) {}
+    }
+    try {
+      var s = JSON.parse(localStorage.getItem(LS_W) || "{}");
+      if (s.nav) setNav(s.nav);
+      if (s.memo) setMemo(s.memo);
+    } catch (e) {}
+
+    function bind(handle, which) {
+      if (!handle) return;
+      handle.addEventListener("mousedown", function (e) {
+        e.preventDefault();
+        handle.classList.add("dragging");
+        document.body.classList.add("col-resizing");
+        var startX = e.clientX, startNav = readW("--nav-w", DEF_NAV), startMemo = readW("--memo-w", DEF_MEMO);
+        function move(ev) {
+          var dx = ev.clientX - startX;
+          if (which === "nav") setNav(startNav + dx); else setMemo(startMemo - dx);
+        }
+        function up() {
+          handle.classList.remove("dragging");
+          document.body.classList.remove("col-resizing");
+          document.removeEventListener("mousemove", move);
+          document.removeEventListener("mouseup", up);
+          save();
+        }
+        document.addEventListener("mousemove", move);
+        document.addEventListener("mouseup", up);
+      });
+      handle.addEventListener("keydown", function (e) {
+        var step = e.key === "ArrowLeft" ? -16 : e.key === "ArrowRight" ? 16 : 0;
+        if (!step) return;
+        e.preventDefault();
+        if (which === "nav") setNav(readW("--nav-w", DEF_NAV) + step); else setMemo(readW("--memo-w", DEF_MEMO) - step);
+        save();
+      });
+      handle.addEventListener("dblclick", function () {
+        if (which === "nav") setNav(DEF_NAV); else setMemo(DEF_MEMO);
+        save();
+      });
+    }
+    bind(document.getElementById("rz1"), "nav");
+    bind(document.getElementById("rz2"), "memo");
+  })();
+
+  /* ── 본문 글씨 크기 조절 (A− / A＋ · 클릭 초기화) ── */
+  (function () {
+    var app = document.querySelector(".app");
+    var minus = document.getElementById("fsMinus");
+    var plus = document.getElementById("fsPlus");
+    var val = document.getElementById("fsVal");
+    if (!app || !minus || !plus || !val) return;
+    var LS_FS = "vibeadv-fontscale-v1";
+    var MIN = 0.85, MAX = 1.6, STEP = 0.05, DEF = 1.0;
+    var scale = DEF;
+    function clamp(v) { return Math.max(MIN, Math.min(MAX, v)); }
+    function round2(v) { return Math.round(v * 100) / 100; }
+    function apply() {
+      app.style.setProperty("--doc-zoom", String(scale));
+      val.textContent = Math.round(scale * 100) + "%";
+      minus.disabled = scale <= MIN + 1e-6;
+      plus.disabled = scale >= MAX - 1e-6;
+    }
+    function save() {
+      try { localStorage.setItem(LS_FS, String(scale)); } catch (e) {}
+    }
+    function set(v) { scale = clamp(round2(v)); apply(); save(); }
+    try {
+      var raw = parseFloat(localStorage.getItem(LS_FS));
+      if (!isNaN(raw)) scale = clamp(round2(raw));
+    } catch (e) {}
+    apply();
+    minus.addEventListener("click", function () { set(scale - STEP); });
+    plus.addEventListener("click", function () { set(scale + STEP); });
+    val.addEventListener("click", function () { set(DEF); });
+  })();
+
+  /* ── 메모장: 자동 저장 + MD 다운로드 ── */
+  var LS_MEMO = "vibeadv-memo-v1";
+  var memoText = document.getElementById("memoText");
+  var memoStatus = document.getElementById("memoStatus");
+  var memoCount = document.getElementById("memoCount");
+  var saveTimer = null;
+
+  try { memoText.value = localStorage.getItem(LS_MEMO) || ""; } catch (e) {}
+
+  function updateCount() {
+    var n = memoText.value.length;
+    memoCount.textContent = n ? n.toLocaleString() + "자" : "";
+  }
+  updateCount();
+
+  memoText.addEventListener("input", function () {
+    memoStatus.textContent = "저장 중…";
+    updateCount();
+    clearTimeout(saveTimer);
+    saveTimer = setTimeout(function () {
+      try {
+        localStorage.setItem(LS_MEMO, memoText.value);
+        memoStatus.textContent = "자동 저장됨";
+      } catch (e) {
+        memoStatus.textContent = "저장 실패 — 브라우저 저장 공간을 확인하세요";
+      }
+    }, 400);
+  });
+
+  document.getElementById("memoDl").addEventListener("click", function () {
+    var d = new Date();
+    function p2(n) { return String(n).padStart(2, "0"); }
+    var stamp = d.getFullYear() + "-" + p2(d.getMonth() + 1) + "-" + p2(d.getDate());
+    var header = "# 바이브코딩 수업 메모\n\n> " + stamp + " " + p2(d.getHours()) + ":" + p2(d.getMinutes()) + " 저장\n\n";
+    var blob = new Blob([header + memoText.value], { type: "text/markdown;charset=utf-8" });
+    var a = document.createElement("a");
+    a.href = URL.createObjectURL(blob);
+    a.download = "바이브코딩-메모-" + stamp + ".md";
+    document.body.appendChild(a);
+    a.click();
+    setTimeout(function () {
+      URL.revokeObjectURL(a.href);
+      a.remove();
+    }, 500);
+  });
+
+  /* ── 강사용 관리자 모드 (localStorage · 강사 브라우저 전용) ── */
+  (function admin() {
+    var LS_ON = "vibeadv-admin-on", LS_LOCK = "vibeadv-admin-lockdays",
+        LS_NOTES = "vibeadv-admin-notes", LS_DONE = "vibeadv-admin-done";
+    function load(k, def) { try { return JSON.parse(localStorage.getItem(k)) || def; } catch (e) { return def; } }
+    function save(k, v) { try { localStorage.setItem(k, JSON.stringify(v)); } catch (e) {} }
+
+    var isAdmin = localStorage.getItem(LS_ON) === "1";
+    var lockDays = load(LS_LOCK, []);
+    var notes = load(LS_NOTES, {});
+    var done = load(LS_DONE, []);
+
+    function dayOf(key) {
+      if (key === "day1" || /^d1-/.test(key)) return 1;
+      if (key === "day2" || /^d2-/.test(key)) return 2;
+      if (key === "day3" || /^d3-/.test(key)) return 3;
+      return 0;
+    }
+    function titleOf(key) {
+      for (var i = 0; i < ORDER.length; i++) if (ORDER[i].k === key) return ORDER[i].t;
+      return key;
+    }
+
+    var app = document.querySelector(".app");
+
+    var lockNotice = document.createElement("div");
+    lockNotice.id = "lockNotice";
+    lockNotice.innerHTML = '<div class="lk-ico">🔒</div><div class="lk-title">아직 공개 전입니다</div><div>이 부분은 수업 진행에 맞춰 공개됩니다.</div>';
+    main.appendChild(lockNotice);
+
+    var bar = document.createElement("div");
+    bar.id = "adminBar";
+    bar.setAttribute("aria-label", "강사 관리자 도구");
+    bar.innerHTML =
+      '<span class="ab-badge">🔧 관리자</span>' +
+      '<span class="ab-sep"></span>' +
+      '<span class="ab-group">잠금:' +
+        '<button class="lockbtn" data-lockday="1">DAY1</button>' +
+        '<button class="lockbtn" data-lockday="2">DAY2</button>' +
+        '<button class="lockbtn" data-lockday="3">DAY3</button>' +
+      '</span>' +
+      '<span class="ab-sep"></span>' +
+      '<label class="ab-done"><input type="checkbox" id="abDone"> 이 세션 완료</label>' +
+      '<button id="abNoteBtn">🛠 개선메모</button>' +
+      '<span id="abProg"></span>' +
+      '<button id="abExport">⬇ 개선메모 MD</button>' +
+      '<button id="abExit">✕ 종료</button>';
+    app.appendChild(bar);
+
+    var pop = document.createElement("div");
+    pop.id = "abNotePop";
+    pop.innerHTML = '<div class="np-head" id="npHead"></div><textarea id="abNote" placeholder="이 세션에서 개선할 점을 적어두세요. 자동 저장됩니다."></textarea>';
+    app.appendChild(pop);
+
+    var abDone = bar.querySelector("#abDone");
+    var abProg = bar.querySelector("#abProg");
+    var abNote = pop.querySelector("#abNote");
+    var npHead = pop.querySelector("#npHead");
+    var lockBtns = Array.prototype.slice.call(bar.querySelectorAll(".lockbtn"));
+
+    function renderLocks() {
+      [1, 2, 3].forEach(function (d) {
+        var grp = nav.querySelector('.day-group[data-day="' + d + '"]');
+        if (grp) grp.classList.toggle("locked", lockDays.indexOf(d) >= 0);
+      });
+      lockBtns.forEach(function (b) {
+        b.classList.toggle("locked", lockDays.indexOf(parseInt(b.getAttribute("data-lockday"), 10)) >= 0);
+      });
+    }
+    function renderDone() {
+      navLinks.forEach(function (a) {
+        a.classList.toggle("done", done.indexOf(a.getAttribute("data-page")) >= 0);
+      });
+      abProg.textContent = "완료 " + done.length + "/" + ORDER.length;
+    }
+    function applyLockView() {
+      var locked = lockDays.indexOf(dayOf(currentKey())) >= 0;
+      main.classList.toggle("locked-view", locked && !isAdmin);
+    }
+    function syncSession() {
+      var key = currentKey();
+      abDone.checked = done.indexOf(key) >= 0;
+      abNote.value = notes[key] || "";
+      npHead.textContent = "🛠 개선메모 — " + titleOf(key);
+    }
+    function refresh() {
+      document.body.classList.toggle("is-admin", isAdmin);
+      renderLocks(); renderDone(); applyLockView(); syncSession();
+    }
+    function setAdmin(on) {
+      isAdmin = on;
+      localStorage.setItem(LS_ON, on ? "1" : "0");
+      if (!on) pop.classList.remove("open");
+      refresh();
+    }
+
+    /* 진입: 로고 3연속 클릭 */
+    var mark = document.querySelector(".topbar .mark");
+    var clicks = 0, ct;
+    if (mark) mark.addEventListener("click", function () {
+      clicks++; clearTimeout(ct);
+      ct = setTimeout(function () { clicks = 0; }, 800);
+      if (clicks >= 3) { clicks = 0; setAdmin(!isAdmin); }
+    });
+
+    bar.querySelector("#abExit").addEventListener("click", function () { setAdmin(false); });
+
+    lockBtns.forEach(function (b) {
+      b.addEventListener("click", function () {
+        var d = parseInt(b.getAttribute("data-lockday"), 10);
+        var i = lockDays.indexOf(d);
+        if (i >= 0) lockDays.splice(i, 1); else lockDays.push(d);
+        save(LS_LOCK, lockDays);
+        renderLocks(); applyLockView();
+      });
+    });
+
+    abDone.addEventListener("change", function () {
+      var key = currentKey(), i = done.indexOf(key);
+      if (abDone.checked && i < 0) done.push(key);
+      else if (!abDone.checked && i >= 0) done.splice(i, 1);
+      save(LS_DONE, done); renderDone();
+    });
+
+    bar.querySelector("#abNoteBtn").addEventListener("click", function () {
+      pop.classList.toggle("open");
+      if (pop.classList.contains("open")) abNote.focus();
+    });
+    abNote.addEventListener("input", function () {
+      var key = currentKey();
+      if (abNote.value.trim()) notes[key] = abNote.value; else delete notes[key];
+      save(LS_NOTES, notes);
+    });
+
+    bar.querySelector("#abExport").addEventListener("click", function () {
+      var lines = ["# 바이브코딩 교안 — 개선 메모", ""], count = 0;
+      ORDER.forEach(function (o) {
+        var n = notes[o.k];
+        if (n && n.trim()) { lines.push("## " + o.t, "", n.trim(), ""); count++; }
+      });
+      if (!count) lines.push("_아직 작성된 개선 메모가 없습니다._");
+      var blob = new Blob([lines.join("\n")], { type: "text/markdown;charset=utf-8" });
+      var a = document.createElement("a");
+      a.href = URL.createObjectURL(blob);
+      a.download = "바이브코딩-개선메모.md";
+      document.body.appendChild(a); a.click();
+      setTimeout(function () { URL.revokeObjectURL(a.href); a.remove(); }, 500);
+    });
+
+    window.addEventListener("hashchange", function () { applyLockView(); syncSession(); });
+
+    refresh();
+  })();
+})();
+</script>
+</body>
+</html>
