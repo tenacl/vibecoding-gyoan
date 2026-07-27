@@ -677,7 +677,7 @@
       <a class="toc-item" href="#d2-3" data-page="d2-3"><span class="t">03</span>API란 무엇인가</a>
       <a class="toc-item" href="#d2-g" data-page="d2-g"><span class="t">04</span>랜덤 이미지 API 미술관</a>
       <a class="toc-item" href="#d2-4" data-page="d2-4"><span class="t">05</span>프로젝트 3 · 구글 API 크롬 익스텐션</a>
-      <a class="toc-item" href="#d2-5" data-page="d2-5"><span class="t">06</span>프로젝트 4 · 공공 API 시각화 + AI</a>
+      <a class="toc-item" href="#d2-5" data-page="d2-5"><span class="t">06</span>프로젝트 4 · 주식 시세 대시보드</a>
       <a class="toc-item" href="#d2-6" data-page="d2-6"><span class="t">07</span>따라하기 · 쇼핑몰 + 결제</a>
       <a class="toc-item" href="#d2-7" data-page="d2-7"><span class="t">08</span>회고</a>
     </div>
@@ -2123,7 +2123,7 @@ F(형식):
               <tr><td>10:10–10:40</td><td>이론</td><td><a href="#d2-3">API란 무엇인가</a></td></tr>
               <tr><td>10:40–11:00</td><td>완충</td><td><a href="#d2-g">랜덤 이미지 API 미술관</a></td></tr>
               <tr><td>11:00–12:00</td><td>프로젝트</td><td><a href="#d2-4">프로젝트 3 · 구글 API 크롬 익스텐션</a></td></tr>
-              <tr><td>13:00–14:50</td><td>프로젝트</td><td><a href="#d2-5">프로젝트 4 · 공공 API 시각화 + AI</a></td></tr>
+              <tr><td>13:00–14:50</td><td>프로젝트</td><td><a href="#d2-5">프로젝트 4 · 주식 시세 대시보드</a></td></tr>
               <tr><td>15:00–16:40</td><td>따라하기</td><td><a href="#d2-6">쇼핑몰 + 결제 연결</a></td></tr>
               <tr><td>16:40–17:00</td><td>회고</td><td><a href="#d2-7">Day 2 회고</a></td></tr>
             </tbody>
@@ -2378,52 +2378,49 @@ API 키는 발급받아 뒀어. 키를 넣을 위치만 알려주면 내가 직�
       <!-- ═══ d2-5 ═══ -->
       <article class="page" id="p-d2-5">
         <div class="crumb" data-day="2"><span class="cday">DAY 2</span><span class="ctime">13:00–14:50</span><span class="chip proj">프로젝트 4</span></div>
-        <h2>공공 API + 데이터 시각화 + AI 답변 서비스</h2>
+        <h2>공공 API + 데이터 시각화 — 주식 시세 대시보드</h2>
         <p class="goal">오후에 각자 완주하는 프로젝트는 이것 하나입니다. 서두르지 말고 체크포인트를 하나씩 통과하세요.</p>
 
         <div class="diagram">
-          <svg viewBox="0 0 680 210" role="img" aria-label="공공 API 시각화 AI 서비스 구조 도식">
-            <rect class="dg-box" x="15" y="40" width="185" height="80" rx="10"></rect>
-            <text class="dg-t" x="107" y="68" text-anchor="middle">공공 API</text>
-            <text class="dg-s" x="107" y="88" text-anchor="middle">data.go.kr</text>
-            <text class="dg-s" x="107" y="105" text-anchor="middle">미세먼지 · 날씨 데이터</text>
-            <path class="dg-arrow" d="M200 80 H240" marker-end="url(#arw)"></path>
-            <text class="dg-f" x="220" y="68" text-anchor="middle">JSON</text>
-            <rect class="dg-hi" x="245" y="40" width="185" height="80" rx="10"></rect>
-            <text class="dg-t" x="337" y="68" text-anchor="middle">내 서비스 화면</text>
-            <text class="dg-s" x="337" y="88" text-anchor="middle">받아온 데이터를</text>
-            <text class="dg-s" x="337" y="105" text-anchor="middle">📊 차트로 시각화</text>
-            <path class="dg-arrow" d="M430 80 H470" marker-end="url(#arw)"></path>
-            <text class="dg-f" x="450" y="68" text-anchor="middle">데이터 전달</text>
-            <rect class="dg-ok" x="475" y="40" width="190" height="80" rx="10"></rect>
-            <text class="dg-t" x="570" y="68" text-anchor="middle">AI 답변</text>
-            <text class="dg-s" x="570" y="88" text-anchor="middle">"이 데이터를 보고</text>
-            <text class="dg-s" x="570" y="105" text-anchor="middle">답해줘"</text>
-            <rect class="dg-box" x="440" y="150" width="230" height="40" rx="9"></rect>
-            <text class="dg-s" x="555" y="175" text-anchor="middle" style="fill:var(--ink)">💬 "오늘 빨래 널어도 돼?"</text>
-            <path class="dg-arrow" d="M555 150 V125" marker-end="url(#arw)"></path>
-            <text class="dg-f" x="200" y="180" text-anchor="middle">데이터(API) → 화면(프론트엔드) → 지능(AI) : 3층 구조</text>
+          <svg viewBox="0 0 680 200" role="img" aria-label="주식시세 API 대시보드 구조 도식">
+            <rect class="dg-box" x="60" y="35" width="220" height="80" rx="10"></rect>
+            <text class="dg-t" x="170" y="63" text-anchor="middle">공공 API</text>
+            <text class="dg-s" x="170" y="83" text-anchor="middle">data.go.kr</text>
+            <text class="dg-s" x="170" y="100" text-anchor="middle">금융위원회 주식시세정보</text>
+            <path class="dg-arrow" d="M280 75 H340" marker-end="url(#arw)"></path>
+            <text class="dg-f" x="310" y="63" text-anchor="middle">JSON</text>
+            <rect class="dg-hi" x="345" y="35" width="220" height="80" rx="10"></rect>
+            <text class="dg-t" x="455" y="63" text-anchor="middle">내 대시보드 화면</text>
+            <text class="dg-s" x="455" y="83" text-anchor="middle">종목별 종가 · 거래량을</text>
+            <text class="dg-s" x="455" y="100" text-anchor="middle">📊 막대차트로 비교</text>
+            <path class="dg-arrow" d="M455 115 V140" marker-end="url(#arw)"></path>
+            <rect class="dg-ok" x="345" y="145" width="220" height="40" rx="9"></rect>
+            <text class="dg-s" x="455" y="170" text-anchor="middle" style="fill:var(--ink)">📊 "관심 종목 한눈에 비교"</text>
+            <text class="dg-f" x="170" y="165" text-anchor="middle">데이터(API) → 화면(프론트엔드) : 2층 구조</text>
           </svg>
         </div>
 
         <h3 class="sec">핵심 내용</h3>
         <ul>
-          <li><b>공공데이터포털(data.go.kr)</b> = 정부가 공개한 데이터 창고. 날씨, 미세먼지, 버스 도착 정보 같은 데이터를 무료 API로 받을 수 있다</li>
-          <li>"AI가 데이터 기반으로 답한다"는 건 별게 아니다 — 사용자의 질문과 함께 방금 받아온 데이터를 AI에게 건네주며 "이 데이터를 보고 답해줘"라고 시키는 것</li>
-          <li>페이지 안의 AI는 지금 쓰는 클로드 코드와는 별개로, <b>AI API 키가 따로 필요하다</b> — 어떤 AI를 어떻게 연결할지는 수업에서 키와 함께 안내한다 (혼자 해본다면: "이 페이지에 AI 답변 기능을 붙이고 싶어. 방법을 제안해줘"라고 물어보는 것부터)</li>
-          <li>어제와 오늘 배운 것이 전부 조립되는 시간이다 — 프론트엔드(Day 1) + API(오늘 오전) + AI</li>
+          <li><b>공공데이터포털(data.go.kr)</b> = 정부가 공개한 데이터 창고. 오늘 쓸 것은 <b>금융위원회_주식시세정보</b> — <b>자동승인</b>이라 신청하면 바로 키가 나온다 (개발계정 1만 건/일이면 오늘 실습엔 차고 넘친다)</li>
+          <li>한 번 호출하면 종목별로 <b>시가·고가·저가·종가·거래량·시가총액</b>이 한꺼번에 온다 — 차트로 그릴 재료가 이미 응답 안에 다 들어있다</li>
+          <li><b>시각화</b>란 받아온 JSON을 그대로 화면에 쏟아놓는 게 아니라, 필요한 숫자만 골라 <b>차트로 그려 한눈에 보이게</b> 만드는 것 — Claude에게 "종목별 종가를 막대차트로 그려줘"라고 시키면 된다</li>
+          <li>이 API는 <b>일별 시세</b>다(실시간 아님). 기준일자는 <b>직전 거래일</b>로 잡아야 한다 — 주말·공휴일을 넣으면 데이터가 0건으로 온다</li>
+          <li>어제와 오늘 배운 것이 조립되는 시간이다 — 프론트엔드(Day 1) + API(오늘 오전)</li>
+          <li>⚠️ 오늘 만드는 것은 <b>학습용 시각화 연습</b>이다 — 투자 판단의 근거로 쓰라고 만드는 화면이 아니다</li>
         </ul>
 
         <div class="practice">
           <div class="plabel">단계별 체크포인트 — 순서대로, 하나씩</div>
           <ol>
             <li>API 응답(JSON)이 F12 콘솔에 찍힌다 — <b>여기까지가 절반이다</b></li>
-            <li>받아온 숫자로 차트가 화면에 그려진다</li>
-            <li>질문을 입력하면 데이터를 근거로 답이 온다</li>
+            <li>관심 종목 3~5개의 <b>종가가 막대차트</b>로 그려진다</li>
+            <li>거래량 차트를 나란히 놓고 제목·단위·기준일자를 붙여 <b>대시보드 화면</b>이 된다</li>
           </ol>
-          <div class="prompt-box"><span class="plead">EXAMPLE PROMPT (시작)</span>공공데이터포털의 미세먼지 API를 쓰는 웹페이지를 만들자.
-단계별로 가자. 먼저 API를 호출해서 응답 데이터가
-브라우저 콘솔에 찍히는 것까지만 해줘.
+          <div class="prompt-box"><span class="plead">EXAMPLE PROMPT (시작)</span>공공데이터포털의 '금융위원회_주식시세정보' API를 쓰는
+주식 대시보드 웹페이지를 만들자.
+단계별로 가자. 먼저 기준일자 하나로 API를 호출해서
+응답 데이터가 브라우저 콘솔에 찍히는 것까지만 해줘.
 인증키는 발급받아 뒀어. 넣을 위치를 알려줘.</div>
         </div>
         <div class="tipcard">막히면 어제의 디버깅 3원칙 — ① 에러 전문 붙여넣기 ② "기대 vs 실제"로 말하기 ③ 한 번에 하나만. API 프로젝트에서 특히 강력합니다.</div>
@@ -2433,6 +2430,8 @@ API 키는 발급받아 뒀어. 키를 넣을 위치만 알려주면 내가 직�
             <thead><tr><th>증상</th><th>해결</th></tr></thead>
             <tbody>
               <tr><td>"등록되지 않은 키" 류의 에러</td><td>공공데이터포털 키는 <b>일반 키와 인코딩 키 2가지</b>다 — 서로 바꿔 넣으면 실패한다. Claude에게: <b>"인코딩 키로 바꿔서 다시 호출해줘"</b></td></tr>
+              <tr><td>에러도 없는데 <b>결과가 0건</b></td><td>기준일자가 <b>주말·공휴일</b>이면 시세가 없다 — 내 잘못이 아니다. Claude에게: <b>"기준일자를 직전 거래일로 자동 계산하게 고쳐줘"</b></td></tr>
+              <tr><td>종목명을 넣으면 결과가 안 나옴</td><td>한글 종목명은 주소에 넣을 때 <b>인코딩이 한 번 더</b> 필요하다. Claude에게: <b>"종목명 한글 파라미터가 URL 인코딩되도록 고쳐줘"</b></td></tr>
               <tr><td>콘솔에 <b>CORS</b>라는 빨간 에러</td><td>브라우저가 외부 요청을 막은 것 — 내 잘못이 아니다. Claude에게: <b>"CORS 오류가 나. 우회 방법을 적용해줘"</b></td></tr>
               <tr><td>에러는 없는데 데이터가 안 옴</td><td>F12 → Network 탭의 빨간 줄을 캡처해 Claude에게: <b>"요청은 가는데 데이터가 안 와. 원인 찾아줘"</b></td></tr>
             </tbody>
@@ -2441,8 +2440,8 @@ API 키는 발급받아 뒀어. 키를 넣을 위치만 알려주면 내가 직�
         <h3 class="sec">이 장을 마치면</h3>
         <ul class="checklist">
           <li>F12 콘솔에서 API 응답(JSON)을 내 눈으로 봤다</li>
-          <li>받아온 데이터가 차트로 그려진다</li>
-          <li>질문을 입력하면 데이터를 근거로 답이 돌아온다</li>
+          <li>관심 종목들의 종가가 막대차트로 그려진다</li>
+          <li>제목·단위·기준일자가 붙은 대시보드 화면이 됐다</li>
         </ul>
       </article>
 
@@ -2939,7 +2938,7 @@ GitHub에 올리는 것부터 Vercel 연결, 환경변수 등록, 배포까지
         <ul class="checklist">
           <li><b>GitHub 계정 가입</b> (github.com) — Day 1 오후, 내 웹페이지를 인터넷에 공개할 때 사용</li>
           <li><b>Google 계정 준비</b> + Google Cloud 콘솔(console.cloud.google.com) 로그인 확인 — Day 2 구글 API 키 발급용</li>
-          <li><b>공공데이터포털 가입</b> (data.go.kr) + 미세먼지·날씨 등 관심 API <b>활용신청 미리 제출</b> — 승인까지 시간이 걸릴 수 있음</li>
+          <li><b>공공데이터포털 가입</b> (data.go.kr) + <b>금융위원회_주식시세정보</b> 활용신청 (Day 2 오후 실습용) — <b>자동승인</b>이라 바로 키가 나오지만, 미리 받아두면 수업 시간을 아낀다</li>
           <li><b>Claude 유료 구독(Pro 이상) 준비</b> — 아쉽게도 무료 계정으로는 클로드 코드를 쓸 수 없다. 요금제는 claude.com/pricing에서 확인</li>
           <li><b>VS Code 설치</b> (code.visualstudio.com)</li>
           <li><b>Node.js LTS 설치</b> (nodejs.org) — 클로드 코드와 웹 프로젝트 실행의 기본 엔진. 설치 방법은 부록 <b>「설치 상세 가이드」</b> 참고</li>
@@ -3560,7 +3559,7 @@ GitHub에 올리는 것부터 Vercel 연결, 환경변수 등록, 배포까지
     { k: "d2-3",     t: "API란 무엇인가" },
     { k: "d2-g",     t: "랜덤 이미지 API 미술관" },
     { k: "d2-4",     t: "프로젝트 3 · 구글 API 크롬 익스텐션" },
-    { k: "d2-5",     t: "프로젝트 4 · 공공 API 시각화 + AI" },
+    { k: "d2-5",     t: "프로젝트 4 · 주식 시세 대시보드" },
     { k: "d2-6",     t: "따라하기 · 쇼핑몰 + 결제" },
     { k: "d2-7",     t: "Day 2 회고" },
     { k: "day3",     t: "Day 3 개요 — 확장" },
